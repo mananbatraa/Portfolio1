@@ -6,7 +6,9 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 const FROM = "MANAN BATRA";
 const TO = "PORTFOLIO";
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+<>/";
-const SEEN_KEY = "intro-seen";
+// Module state survives in-app navigation but resets on every full page load,
+// so the intro replays on refresh but not when navigating back to home.
+let playedThisLoad = false;
 
 type Phase = "name" | "scramble" | "word" | "reveal" | "done";
 
@@ -15,18 +17,14 @@ const IntroContext = createContext(true);
 // True once the intro has lifted, so content underneath can start its own entrances.
 export const useIntroDone = () => useContext(IntroContext);
 
-// Plays once per session: the name rises in, scrambles into "PORTFOLIO",
+// Plays on every page load: the name rises in, scrambles into "PORTFOLIO",
 // then a curtain lifts to reveal the page. The laptop frames buffer underneath.
 export default function Intro({ children }: { children: ReactNode }) {
   const [phase, setPhase] = useState<Phase>("name");
   const [text, setText] = useState(FROM);
 
   useEffect(() => {
-    let skip = false;
-    try {
-      skip = sessionStorage.getItem(SEEN_KEY) === "1";
-    } catch {}
-    if (skip || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (playedThisLoad || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setPhase("done");
       return;
     }
@@ -37,11 +35,10 @@ export default function Intro({ children }: { children: ReactNode }) {
       setTimeout(() => setPhase("word"), 2400),
       setTimeout(() => setPhase("reveal"), 3200),
       setTimeout(() => {
+        // Marked at the end, not the start, so React's dev double-mount still plays it.
+        playedThisLoad = true;
         setPhase("done");
         document.documentElement.style.overflow = "";
-        try {
-          sessionStorage.setItem(SEEN_KEY, "1");
-        } catch {}
       }, 4100),
     ];
     return () => {
