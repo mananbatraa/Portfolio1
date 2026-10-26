@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { music } from "@/lib/content";
 
 type Embed = { src: string; width: number; height: number };
@@ -34,9 +34,51 @@ function Bars({ playing }: { playing: boolean }) {
   );
 }
 
+const isAudioFile = (url: string) => /\.(mp3|m4a|ogg|wav|aac)(\?|$)/i.test(url);
+
+// Icon-only mode for a self-hosted audio file: the waves icon is the whole UI.
+function AudioIcon() {
+  const audio = useRef<HTMLAudioElement>(null);
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    if (audio.current) audio.current.volume = 0.5;
+  }, []);
+
+  const toggle = () => {
+    const el = audio.current;
+    if (!el) return;
+    if (el.paused) el.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+    else {
+      el.pause();
+      setPlaying(false);
+    }
+  };
+
+  return (
+    <div className="fixed bottom-5 right-5 z-50">
+      <audio ref={audio} src={music.url} loop preload="none" />
+      <button
+        type="button"
+        onClick={toggle}
+        aria-pressed={playing}
+        aria-label={playing ? "Pause music" : `Play ${music.title} by ${music.artist}`}
+        title={`${music.title} · ${music.artist}`}
+        className="glass-border flex h-12 w-12 items-center justify-center rounded-full bg-ground/70 backdrop-blur-xl transition hover:border-accent/50"
+      >
+        <Bars playing={playing} />
+      </button>
+    </div>
+  );
+}
+
 // Off until someone opens it: browsers block autoplay with sound, and
 // visitors shouldn't get music they didn't ask for. Closing stops playback.
 export default function MusicPlayer() {
+  return isAudioFile(music.url) ? <AudioIcon /> : <EmbedPlayer />;
+}
+
+function EmbedPlayer() {
   const [open, setOpen] = useState(false);
   const embed = toEmbed(music.url);
   if (!embed) return null;

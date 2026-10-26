@@ -13,7 +13,9 @@ export const profile = {
   resume: "",
 };
 
-// The floating music player. Paste a YouTube or Spotify link to a track.
+// The floating music player. Either a path to an audio file in public/
+// (e.g. "/music/track.mp3", shown as just a waves icon), or a YouTube or
+// Spotify link (shown as a small embedded player card).
 // YouTube plays the full song for everyone; Spotify gives logged-out
 // visitors a 30-second preview. Leave empty to hide the player.
 export const music = {
