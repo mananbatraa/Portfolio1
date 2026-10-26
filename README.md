@@ -1,8 +1,8 @@
 # Manan Batra · Portfolio
 
-A scroll-cinema portfolio. A laptop sits behind the page and comes apart, rebuilds, orbits and zooms as you scroll. Each of the six sections rides one act of that film.
+A scroll-driven portfolio. A 3D laptop sits behind the page and comes apart, rebuilds, orbits and zooms as you scroll. Each of the six sections rides one act of that animation. An intro scrambles the name into "PORTFOLIO" on every page load.
 
-Built with Next.js 14 (App Router), TypeScript, Tailwind CSS and Framer Motion.
+Built with Next.js 14 (App Router), TypeScript, Tailwind CSS, Framer Motion and Three.js (react-three-fiber).
 
 ## Run it
 
@@ -13,16 +13,10 @@ npm run dev
 
 ## How the hero works
 
-- `src/components/FrameStage.tsx` is the scroll engine. On first visit it plays each clip once, captures every frame as WebP, and caches the frames in IndexedDB. After that, scrolling just paints the right frame to a canvas.
-- `src/lib/hero-assets.ts` holds every media URL and the six-act segment plan. Empty URLs are fine: until the clips exist, the engine cross-fades between the two stills in `public/hero/`.
-- With `prefers-reduced-motion`, only the still is shown.
-
-## Adding the real footage
-
-1. Generate the stills and clips with the prompts in the plan doc (Higgsfield: Nano Banana + Kling 3.0), then upscale the clips with Topaz.
-2. Replace `public/hero/assembled.svg` and `exploded.svg` with the real stills, or point the constants at a CDN.
-3. Fill in `DECON`, `ORBIT`, `BRIDGE`, `MACRO` (1080p) and their `_4K` versions in `src/lib/hero-assets.ts`. The clips must be served with CORS enabled so the canvas can read them.
-4. Re-sample `--accent` in `src/app/globals.css` from the footage's glow.
+- `src/components/LaptopStage.tsx` builds the laptop from simple meshes and maps scroll progress onto six acts: deconstruct, reassemble, orbit, bridge, detail (camera push into the keyboard) and reveal.
+- `src/lib/hero-assets.ts` holds the act spans. Change a span to make that act longer or shorter.
+- The screen is a canvas texture drawn in `makeScreenTexture`. Edit it to change what the laptop shows.
+- With `prefers-reduced-motion`, the laptop stays still.
 
 ## Content
 
