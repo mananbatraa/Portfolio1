@@ -3,11 +3,12 @@
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import { useIntroDone } from "@/components/Intro";
+import { TextRoll } from "@/components/ui/text-roll";
 import { cn } from "@/lib/utils";
 
 type Props = { text: string; className?: string; as?: "h1" | "h2" | "p" };
 
-// Headlines rise word by word out of a mask.
+// Headlines rise word by word out of a mask, then roll letter by letter on hover.
 export default function RevealText({ text, className, as = "h2" }: Props) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
@@ -20,6 +21,7 @@ export default function RevealText({ text, className, as = "h2" }: Props) {
       ref={ref as never}
       initial="hidden"
       animate={inView && introDone ? "show" : "hidden"}
+      whileHover="hovered"
       transition={{ staggerChildren: 0.06 }}
       aria-label={text}
     >
@@ -33,7 +35,9 @@ export default function RevealText({ text, className, as = "h2" }: Props) {
             }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            {word}
+            <TextRoll inherit center>
+              {word}
+            </TextRoll>
           </motion.span>
         </span>
       ))}
