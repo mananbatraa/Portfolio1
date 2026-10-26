@@ -19,9 +19,10 @@ export const profile = {
 // YouTube plays the full song for everyone; Spotify gives logged-out
 // visitors a 30-second preview. Leave empty to hide the player.
 export const music = {
-  title: "Loser",
-  artist: "Tame Impala",
-  url: "https://www.youtube.com/watch?v=LGLS4ARe-vw",
+  // Royalty-free under the Pixabay Content License.
+  title: "Elevation",
+  artist: "Jonas Blakewood",
+  url: "/music/elevation.mp3",
 };
 
 export const skills = [
