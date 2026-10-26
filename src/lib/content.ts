@@ -19,7 +19,7 @@ export const profile = {
 export const music = {
   title: "Loser",
   artist: "Tame Impala",
-  url: "",
+  url: "https://www.youtube.com/watch?v=LGLS4ARe-vw",
 };
 
 export const skills = [
