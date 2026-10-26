@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Sampled from the laptop's screen glow. Re-sample once the real footage exists. */
+  --accent: 62 230 255;
+  --ground: 7 7 8;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: rgb(var(--ground));
+}
+
+::selection {
+  background: rgb(var(--accent) / 0.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
