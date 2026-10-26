@@ -1,6 +1,7 @@
 import Dock from "@/components/Dock";
 import Intro from "@/components/Intro";
 import LaptopStageLoader from "@/components/LaptopStageLoader";
+import MusicPlayer from "@/components/MusicPlayer";
 import Nav from "@/components/Nav";
 import Contact from "@/components/sections/Contact";
 import Experience from "@/components/sections/Experience";
@@ -15,6 +16,7 @@ export default function Home() {
       <LaptopStageLoader />
       <Nav />
       <Dock />
+      <MusicPlayer />
       <main className="relative z-10">
         <Hero />
         <Skills />

@@ -13,6 +13,15 @@ export const profile = {
   resume: "",
 };
 
+// The floating music player. Paste a YouTube or Spotify link to a track.
+// YouTube plays the full song for everyone; Spotify gives logged-out
+// visitors a 30-second preview. Leave empty to hide the player.
+export const music = {
+  title: "Loser",
+  artist: "Tame Impala",
+  url: "",
+};
+
 export const skills = [
   { group: "Languages", items: ["Python", "Go", "Java", "C", "C++", "SQL", "JavaScript", "TypeScript"] },
   {
