@@ -1,6 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import { useIntroDone } from "@/components/Intro";
 import { cn } from "@/lib/utils";
 
 type Props = { text: string; className?: string; as?: "h1" | "h2" | "p" };
@@ -9,12 +11,15 @@ type Props = { text: string; className?: string; as?: "h1" | "h2" | "p" };
 export default function RevealText({ text, className, as = "h2" }: Props) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.6 });
+  const introDone = useIntroDone();
   return (
     <Tag
       className={cn("flex flex-wrap gap-x-[0.25em]", className)}
+      ref={ref as never}
       initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.6 }}
+      animate={inView && introDone ? "show" : "hidden"}
       transition={{ staggerChildren: 0.06 }}
       aria-label={text}
     >
@@ -23,7 +28,7 @@ export default function RevealText({ text, className, as = "h2" }: Props) {
           <motion.span
             className="inline-block"
             variants={{
-              hidden: reduce ? { opacity: 0 } : { y: "110%" },
+              hidden: reduce ? { opacity: 0 } : { y: "130%" },
               show: reduce ? { opacity: 1 } : { y: "0%" },
             }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}

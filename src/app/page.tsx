@@ -1,5 +1,6 @@
 import FrameStage from "@/components/FrameStage";
 import Dock from "@/components/Dock";
+import Intro from "@/components/Intro";
 import Nav from "@/components/Nav";
 import Contact from "@/components/sections/Contact";
 import Experience from "@/components/sections/Experience";
@@ -11,7 +12,7 @@ import { HERO_SEGMENTS, LAPTOP_ASSEMBLED, LAPTOP_EXPLODED } from "@/lib/hero-ass
 
 export default function Home() {
   return (
-    <>
+    <Intro>
       <FrameStage assembled={LAPTOP_ASSEMBLED} exploded={LAPTOP_EXPLODED} segments={HERO_SEGMENTS} dbName="laptop-scroll" />
       <Nav />
       <Dock />
@@ -23,6 +24,6 @@ export default function Home() {
         <Research />
         <Contact />
       </main>
-    </>
+    </Intro>
   );
 }
