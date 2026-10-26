@@ -1,5 +1,6 @@
 import RevealText from "@/components/RevealText";
 import Section from "@/components/Section";
+import FlipText from "@/components/ui/flip-text";
 import { profile } from "@/lib/content";
 
 export default function Hero() {
@@ -10,9 +11,10 @@ export default function Hero() {
         Open to full-time roles · {profile.location}
       </span>
       <RevealText as="h1" text={profile.name.toUpperCase()} className="font-display text-[18vw] leading-[0.85] md:text-[11vw]" />
-      <p className="mt-6 max-w-xl text-lg text-white/70 md:text-2xl">
-        {profile.role}. {profile.tagline}
-      </p>
+      <FlipText duration={3} className="mt-6 font-display text-3xl tracking-wide text-accent md:text-5xl">
+        {profile.role.toUpperCase()}
+      </FlipText>
+      <p className="mt-4 max-w-xl text-lg text-white/70 md:text-2xl">{profile.tagline}</p>
       <p className="mt-16 font-mono text-xs uppercase tracking-[0.3em] text-white/40">Scroll to take it apart ↓</p>
     </Section>
   );

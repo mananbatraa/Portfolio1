@@ -1,7 +1,14 @@
 import RevealText from "@/components/RevealText";
 import Section from "@/components/Section";
 import SheenCard from "@/components/SheenCard";
+import LogoSlider from "@/components/ui/logo-slider";
 import { skills } from "@/lib/content";
+
+const stack = skills.flatMap((s) => s.items).map((item) => (
+  <span key={item} className="whitespace-nowrap font-mono text-sm uppercase tracking-widest text-white/60">
+    {item}
+  </span>
+));
 
 export default function Skills() {
   return (
@@ -21,6 +28,14 @@ export default function Skills() {
           </SheenCard>
         ))}
       </div>
+      {/* Logos twice so the marquee loops seamlessly. */}
+      <LogoSlider
+        logos={[...stack, ...stack]}
+        speed={50}
+        pauseOnHover
+        showBlur={false}
+        className="mt-10 lg:max-w-5xl [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]"
+      />
     </Section>
   );
 }
