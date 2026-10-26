@@ -22,3 +22,55 @@ html {
     scroll-behavior: auto;
   }
 }
+
+/* Vengeance UI glass-dock (styles ship separately from the registry item; dark variant only). */
+.glass-dock {
+  --tab-bar-home-scale: 0.7;
+  --tab-bar-home-opacity: 1;
+  --tab-bar-blog-scale: 0.7;
+  --tab-bar-blog-opacity: 1;
+  --tab-bar-marker-scale: 0.7;
+  --tab-bar-marker-opacity: 1;
+  --tab-bar-email-scale: 0.7;
+  --tab-bar-email-opacity: 1;
+  --tab-bar-linkedin-scale: 0.7;
+  --tab-bar-linkedin-opacity: 1;
+  --tab-bar-x-scale: 0.7;
+  --tab-bar-x-opacity: 1;
+  --tab-bar-github-scale: 0.7;
+  --tab-bar-github-opacity: 1;
+}
+
+.glass-dock button {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #a3a3a3;
+  transition: color 0.1s;
+}
+
+.glass-dock button.active,
+.glass-dock button:hover {
+  color: rgb(var(--accent));
+}
+
+.glass-dock button svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.glass-border {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}

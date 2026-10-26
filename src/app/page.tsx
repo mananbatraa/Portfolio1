@@ -1,4 +1,5 @@
 import FrameStage from "@/components/FrameStage";
+import Dock from "@/components/Dock";
 import Nav from "@/components/Nav";
 import Contact from "@/components/sections/Contact";
 import Experience from "@/components/sections/Experience";
@@ -13,6 +14,7 @@ export default function Home() {
     <>
       <FrameStage assembled={LAPTOP_ASSEMBLED} exploded={LAPTOP_EXPLODED} segments={HERO_SEGMENTS} dbName="laptop-scroll" />
       <Nav />
+      <Dock />
       <main className="relative z-10">
         <Hero />
         <Skills />
