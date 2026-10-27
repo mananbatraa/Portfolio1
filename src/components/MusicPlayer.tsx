@@ -26,7 +26,7 @@ function Bars({ playing }: { playing: boolean }) {
         <motion.span
           key={i}
           className="w-[3px] rounded-full bg-accent"
-          animate={playing ? { height: ["30%", `${h * 100}%`, "45%", `${h * 80}%`, "30%"] } : { height: "30%" }}
+          animate={playing ? { height: ["30%", `${h * 100}%`, "45%", `${h * 80}%`, "30%"] } : { height: `${h * 70}%` }}
           transition={playing ? { duration: 1.1 + i * 0.15, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
         />
       ))}
