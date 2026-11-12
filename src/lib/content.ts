@@ -93,6 +93,13 @@ export const projects: Project[] = [
     demo: "",
   },
   {
+    name: "Code Repair Agent",
+    stack: ["Python", "AST", "Claude API", "Pytest"],
+    summary:
+      "Scans Python code for bug and security patterns, proposes rule-based fixes, and asks Claude for the rest. Every AI patch is checked against the file before it reaches the review report, and nothing is written back to the source.",
+    href: "https://github.com/mananbatraa/autonomous-code-repair-agent",
+  },
+  {
     name: "AnomalyScan",
     stack: ["Go", "Kafka", "MongoDB", "Prometheus", "Grafana"],
     summary: "Real-time anomaly detection on a Kafka streaming pipeline, with ML scoring and live observability dashboards.",
