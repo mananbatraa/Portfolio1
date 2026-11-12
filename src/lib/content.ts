@@ -74,7 +74,24 @@ export const experience = [
   },
 ];
 
-export const projects = [
+type Project = {
+  name: string;
+  stack: string[];
+  summary: string;
+  href: string;
+  // Live demo URL. Empty string shows a "coming soon" note; leave the key out to show nothing.
+  demo?: string;
+};
+
+export const projects: Project[] = [
+  {
+    name: "ResearchPilot",
+    stack: ["LangGraph", "Gemini", "FastAPI", "React", "TypeScript"],
+    summary:
+      "A four-agent research assistant: one agent searches the web, one analyzes the evidence, one fact-checks it against the sources, and one writes a cited report you can verify claim by claim.",
+    href: "https://github.com/mananbatraa/researchpilot-ai",
+    demo: "",
+  },
   {
     name: "AnomalyScan",
     stack: ["Go", "Kafka", "MongoDB", "Prometheus", "Grafana"],
