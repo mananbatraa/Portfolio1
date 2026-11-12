@@ -19,10 +19,21 @@ export default function Projects() {
                 </li>
               ))}
             </ul>
-            {p.href && (
-              <a href={p.href} target="_blank" rel="noreferrer" className="mt-5 inline-block text-sm text-white underline-offset-4 hover:underline">
-                View on GitHub →
-              </a>
+            {(p.href || p.demo !== undefined) && (
+              <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+                {p.href && (
+                  <a href={p.href} target="_blank" rel="noreferrer" className="text-white underline-offset-4 hover:underline">
+                    View on GitHub →
+                  </a>
+                )}
+                {p.demo ? (
+                  <a href={p.demo} target="_blank" rel="noreferrer" className="text-accent underline-offset-4 hover:underline">
+                    Live demo →
+                  </a>
+                ) : p.demo !== undefined ? (
+                  <span className="font-mono text-xs text-white/40">Live demo soon</span>
+                ) : null}
+              </div>
             )}
           </SheenCard>
         ))}
