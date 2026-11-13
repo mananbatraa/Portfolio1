@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { navState } from "@/lib/nav-state";
 
 const FROM = "MANAN BATRA";
 const TO = "PORTFOLIO";
@@ -22,9 +23,11 @@ export const useIntroDone = () => useContext(IntroContext);
 export default function Intro({ children }: { children: ReactNode }) {
   const [phase, setPhase] = useState<Phase>("name");
   const [text, setText] = useState(FROM);
+  // Read at first render, before any effect marks the app as mounted.
+  const [arrivedInApp] = useState(() => navState.mounted);
 
   useEffect(() => {
-    if (playedThisLoad || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (playedThisLoad || arrivedInApp || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setPhase("done");
       return;
     }
@@ -45,7 +48,7 @@ export default function Intro({ children }: { children: ReactNode }) {
       timers.forEach(clearTimeout);
       document.documentElement.style.overflow = "";
     };
-  }, []);
+  }, [arrivedInApp]);
 
   // Letters cycle through random glyphs and lock into the target left to right.
   useEffect(() => {
