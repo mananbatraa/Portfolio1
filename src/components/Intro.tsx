@@ -1,7 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import Quest from "@/components/quest/Quest";
 import { navState } from "@/lib/nav-state";
 
 const FROM = "MANAN BATRA";
@@ -25,10 +26,19 @@ export default function Intro({ children }: { children: ReactNode }) {
   const [text, setText] = useState(FROM);
   // Read at first render, before any effect marks the app as mounted.
   const [arrivedInApp] = useState(() => navState.mounted);
+  // The story-mode "why are you here?" scene, shown once the intro lifts on a fresh load.
+  const [quest, setQuest] = useState(false);
+  const closeQuest = useCallback(() => setQuest(false), []);
 
   useEffect(() => {
-    if (playedThisLoad || arrivedInApp || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (playedThisLoad || arrivedInApp) {
       setPhase("done");
+      return;
+    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      playedThisLoad = true;
+      setPhase("done");
+      setQuest(true);
       return;
     }
     document.documentElement.style.overflow = "hidden";
@@ -41,6 +51,7 @@ export default function Intro({ children }: { children: ReactNode }) {
         // Marked at the end, not the start, so React's dev double-mount still plays it.
         playedThisLoad = true;
         setPhase("done");
+        setQuest(true);
         document.documentElement.style.overflow = "";
       }, 4100),
     ];
@@ -112,6 +123,7 @@ export default function Intro({ children }: { children: ReactNode }) {
           </motion.div>
         )}
       </AnimatePresence>
+      <AnimatePresence>{quest && <Quest key="quest" onClose={closeQuest} />}</AnimatePresence>
     </IntroContext.Provider>
   );
 }
