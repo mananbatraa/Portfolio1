@@ -9,8 +9,9 @@ export default function Projects() {
       <RevealText text="SYSTEMS THAT STREAM" className="mb-10 font-display text-5xl md:text-7xl" />
       <div className="grid gap-4 md:grid-cols-3 lg:max-w-6xl">
         {projects.map((p, i) => (
-          <SheenCard key={p.name} className={i === 0 ? "md:col-span-2" : ""}>
+          <SheenCard key={p.name} className={i === 0 || p.wide ? "md:col-span-2" : ""}>
             <h3 className="font-display text-3xl">{p.name}</h3>
+            {p.note && <p className="mt-2 font-mono text-xs text-accent/80">{p.note}</p>}
             <p className="mt-3 text-white/70">{p.summary}</p>
             <ul className="mt-5 flex flex-wrap gap-2">
               {p.stack.map((t) => (

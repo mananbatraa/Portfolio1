@@ -81,6 +81,10 @@ type Project = {
   href: string;
   // Live demo URL. Empty string shows a "coming soon" note; leave the key out to show nothing.
   demo?: string;
+  // Short context line under the title, e.g. for team projects.
+  note?: string;
+  // Span two grid columns on desktop (the first project always does).
+  wide?: boolean;
 };
 
 export const projects: Project[] = [
@@ -98,6 +102,16 @@ export const projects: Project[] = [
     summary:
       "Scans Python code for bug and security patterns, proposes rule-based fixes, and asks Claude for the rest. Every AI patch is checked against the file before it reaches the review report, and nothing is written back to the source.",
     href: "https://github.com/mananbatraa/autonomous-code-repair-agent",
+  },
+  {
+    name: "Step Cards",
+    note: "Team project · North America AI Challenge 2026 · I built the school and work mode UI",
+    stack: ["React", "TypeScript", "TanStack Start", "Supabase", "Groq"],
+    summary:
+      "Turns any spoken classroom instruction into picture step cards for autistic and ADHD students in real time, with teacher approval before cards reach students and support that fades as each routine is mastered. A work mode breaks manager instructions into plain steps for neurodivergent adults.",
+    href: "https://github.com/dgupta98/NueroChallange",
+    demo: "https://nuero-challange.vercel.app",
+    wide: true,
   },
   {
     name: "AnomalyScan",
