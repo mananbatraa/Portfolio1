@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
 import RevealText from "@/components/RevealText";
+import WolfMascot from "@/components/mascot/WolfMascot";
 import { about } from "@/lib/personal";
 
 export default function PersonalHero() {
@@ -42,8 +43,8 @@ export default function PersonalHero() {
         </motion.ul>
       </div>
 
-      {/* A polaroid you can toss around. */}
-      <div className="flex justify-center pt-4 md:w-2/5 md:pt-0">
+      {/* A polaroid you can toss around, with wolf-Manan in his hoodie beside it. */}
+      <div className="relative flex justify-center pt-4 md:w-2/5 md:pt-0">
         <motion.div
           drag={!reduce}
           dragConstraints={bounds}
@@ -64,6 +65,14 @@ export default function PersonalHero() {
           <p className="absolute inset-x-0 bottom-4 text-center font-[cursive] text-lg text-neutral-700">that&apos;s me ✌️</p>
           <span className="absolute -top-3 left-1/2 h-6 w-20 -translate-x-1/2 rotate-2 bg-white/50 backdrop-blur-sm" />
         </motion.div>
+        <WolfMascot
+          className="absolute -bottom-16 right-0 z-10 h-56 w-40 md:-bottom-20 md:-right-10 md:h-80 md:w-56"
+          outfit="personal"
+          rim="#ff8060"
+          autoWave
+          pokeable
+          label="Manan as a wolf in a black MB. hoodie, goggles and Converse"
+        />
       </div>
       <p className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 font-mono text-xs uppercase tracking-[0.3em] text-white/40 md:block">
         Drag the photo · scroll for more ↓

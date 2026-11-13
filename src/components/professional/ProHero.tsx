@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import RevealText from "@/components/RevealText";
+import WolfMascot from "@/components/mascot/WolfMascot";
 import FlipText from "@/components/ui/flip-text";
 import { experience, profile } from "@/lib/content";
 
@@ -89,6 +90,13 @@ export default function ProHero() {
         >
           🎓 MS CS · ASU
         </motion.span>
+        <WolfMascot
+          className="absolute -bottom-16 -left-12 z-10 h-56 w-40 md:-bottom-20 md:-left-24 md:h-80 md:w-56"
+          outfit="professional"
+          autoWave
+          pokeable
+          label="Manan as a wolf in a black blazer, white shirt and black tie"
+        />
       </motion.div>
     </section>
   );

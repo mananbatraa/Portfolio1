@@ -3,7 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Byte from "@/components/quest/Byte";
+import WolfMascot from "@/components/mascot/WolfMascot";
 
 type Path = "personal" | "professional" | "explore";
 
@@ -14,7 +14,7 @@ const CHOICES: { id: Path; key: string; label: string; hint: string; href?: stri
     label: "💼 Professional",
     hint: "I'm hiring, or I want to see the work",
     href: "/professional",
-    reply: "A recruiter! Right this way. Experience, results, the lot.",
+    reply: "A recruiter! Hold on, let me suit up. Experience, results, the lot.",
   },
   {
     id: "personal",
@@ -67,7 +67,7 @@ function useTypewriter(text: string, speed = 28, instant = false) {
   return { shown: text.slice(0, count), done: count >= text.length, finish: () => setCount(text.length) };
 }
 
-// The story-mode scene after the intro: Byte floats in, talks in an RPG dialogue box,
+// The story-mode scene after the intro: Manan, as a 3D wolf, walks in, talks in an RPG dialogue box,
 // and asks the visitor why they're here. The answer routes to that side of the site.
 export default function Quest({ onClose }: { onClose: () => void }) {
   const router = useRouter();
@@ -83,8 +83,8 @@ export default function Quest({ onClose }: { onClose: () => void }) {
             `Last time you took the ${lastLabel} path. Where are we headed now?`,
           ]
         : [
-            "Oh! A visitor. Welcome to Manan's corner of the internet.",
-            "I'm Byte. I keep the lights on around here.",
+            "Oh! A visitor. Welcome to my corner of the internet.",
+            "I'm Manan. Well, the wolf version: hoodie up, goggles on.",
             "So, traveller... what brings you here today?",
           ],
     [last, lastLabel],
@@ -96,6 +96,11 @@ export default function Quest({ onClose }: { onClose: () => void }) {
   const text = picked ? picked.reply : lines[step];
   const { shown, done, finish } = useTypewriter(text, 26, reduce);
   const asking = !picked && step === lines.length - 1 && done;
+
+  // The wolf previews the outfit for whichever side is in focus, and points at it.
+  const outfit = (picked ?? (asking ? CHOICES[focus] : null))?.id === "professional" ? "professional" : "personal";
+  const wolfAction = asking ? "point" : (step === 0 && !picked) || picked?.id === "explore" ? "wave" : "idle";
+  const pointAt = [-0.8, 0, 0.8][focus] ?? 0;
 
   // Lock the page behind the scene.
   useEffect(() => {
@@ -116,7 +121,7 @@ export default function Quest({ onClose }: { onClose: () => void }) {
     [picked],
   );
 
-  // After Byte answers, head to the chosen side.
+  // After the wolf answers, head to the chosen side.
   useEffect(() => {
     if (!picked || !done) return;
     const t = setTimeout(() => {
@@ -185,7 +190,14 @@ export default function Quest({ onClose }: { onClose: () => void }) {
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 120, damping: 14, delay: 0.15 }}
       >
-        <Byte talking={!done} mood={picked ? "happy" : "idle"} />
+        <WolfMascot
+          className="h-72 w-56 md:h-[26rem] md:w-80"
+          outfit={outfit}
+          action={wolfAction}
+          talking={!done}
+          pointAt={pointAt}
+          label="Manan as a wolf in a hoodie and goggles"
+        />
         <AnimatePresence>
           {picked && (
             <motion.span
@@ -208,7 +220,7 @@ export default function Quest({ onClose }: { onClose: () => void }) {
         transition={{ duration: 0.5, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
       >
         <span className="absolute -top-4 left-6 z-10 rounded-md border-2 border-accent bg-ground px-3 py-0.5 font-mono text-xs font-bold uppercase tracking-[0.25em] text-accent">
-          Byte
+          Manan
         </span>
         <div className="relative rounded-xl border-2 border-white/80 bg-ground/95 p-6 pt-7 shadow-[0_0_0_4px_rgb(7_7_8),0_0_0_6px_rgba(255,255,255,0.25),0_20px_60px_rgba(0,0,0,0.6)] md:p-8 md:pt-9">
           <p className="min-h-[3.5em] font-mono text-base leading-relaxed text-white md:text-xl" aria-live="polite">
