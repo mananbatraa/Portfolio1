@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import Wolf from "@/components/mascot/Wolf";
 import { LAND_DOTS } from "@/lib/land-dots";
+import { globe as globeCopy } from "@/lib/copy";
 
 export type Stop = { city: string; lat: number; lon: number };
 
@@ -331,7 +332,7 @@ function World({ stops, accent, focus, replay, calm, onLeg }: Props) {
             ref={bubble}
             className="relative whitespace-nowrap rounded-xl border border-white/15 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-900 opacity-0 shadow-lg transition-opacity duration-500"
           >
-            📍 Currently here!
+            {globeCopy.bubble}
             <span className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-white" />
           </div>
         </Html>

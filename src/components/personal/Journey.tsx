@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import SectionHeading from "@/components/motion/SectionHeading";
 import { journey } from "@/lib/personal";
+import { headings } from "@/lib/copy";
 
 // Scrolling down slides the stops sideways while the section stays pinned.
 export default function Journey() {
@@ -27,7 +28,7 @@ export default function Journey() {
   return (
     <section ref={section} id="journey" style={{ height: `calc(100vh + ${distance}px)` }} className="relative">
       <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
-        <SectionHeading kicker="Where I've been" title="THE ROUTE SO FAR" className="mb-12 px-5 md:px-16" />
+        <SectionHeading {...headings.journey} className="mb-12 px-5 md:px-16" />
         <div className="relative">
           <div className="absolute left-0 right-0 top-[11px] h-px bg-white/10" />
           <motion.div style={{ width: line }} className="absolute left-0 top-[11px] h-px bg-accent shadow-[0_0_12px_rgb(var(--accent))]" />

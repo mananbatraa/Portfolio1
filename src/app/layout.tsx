@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { meta } from "@/lib/copy";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -14,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Manan Batra · AI Software Engineer",
-  description: "Portfolio of Manan Batra, AI software engineer and MS CS student at Arizona State University.",
+  title: meta.site.title,
+  description: meta.site.description,
 };
 
 export default function RootLayout({

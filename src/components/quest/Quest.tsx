@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import WolfMascot from "@/components/mascot/WolfMascot";
+import { quest } from "@/lib/copy";
 
 type Path = "personal" | "professional";
 
@@ -11,18 +12,14 @@ const CHOICES: { id: Path; key: string; label: string; hint: string; href: strin
   {
     id: "professional",
     key: "1",
-    label: "💼 Professional",
-    hint: "I'm hiring, or I want to see the work",
+    ...quest.choices.professional,
     href: "/professional",
-    reply: "A recruiter! Hold on, let me suit up. Experience, results, the lot.",
   },
   {
     id: "personal",
     key: "2",
-    label: "🎧 Personal",
-    hint: "I want to get to know Manan",
+    ...quest.choices.personal,
     href: "/personal",
-    reply: "Ooh, the good stuff. Music, cities, friends. Follow me!",
   },
 ];
 
@@ -71,15 +68,8 @@ export default function Quest({ onClose }: { onClose: () => void }) {
   const lines = useMemo(
     () =>
       last
-        ? [
-            "Welcome back, traveller!",
-            `Last time you took the ${lastLabel} path. Where are we headed now?`,
-          ]
-        : [
-            "Oh! A visitor. Welcome to my corner of the internet.",
-            "I'm Manan. Well, the wolf version: hoodie up, goggles on.",
-            "So, traveller... what brings you here today?",
-          ],
+        ? quest.returning(lastLabel ?? "")
+        : quest.firstVisit,
     [last, lastLabel],
   );
 
