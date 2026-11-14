@@ -5,23 +5,35 @@
 // Voice: Manan talking, first person, plain words, short sentences. No "passionate",
 // "journey", "crafting" or "corner of the internet". A little dry humour is fine.
 
-// The question after the name intro. The wolf is Manan, so he talks as himself.
+// The wolf is Manan's assistant, not Manan. He runs the tour while Manan's away and
+// always talks about Manan in the third person. Page text stays in Manan's own voice.
+export const wolf = {
+  // The name tag on his speech bubbles.
+  name: "Guide",
+  label: (outfit: "personal" | "professional") =>
+    `Manan's wolf assistant in his ${outfit === "personal" ? "hoodie" : "suit"}`,
+};
+
+// The question after the name intro.
 export const quest = {
   firstVisit: [
     "Oh, hey. Someone actually clicked the link.",
-    "I'm Manan. The wolf thing is a long story.",
-    "So what are you here for?",
+    "I'm Manan's assistant. He's not around right now, so you get the wolf.",
+    "I can show you his work, or who he is outside it. Which one?",
   ],
-  returning: (lastSide: string) => ["You came back. Nice.", `Last time it was ${lastSide}. Where to this time?`],
+  returning: (lastSide: string) => [
+    "You're back. Manan will be thrilled. I'll tell him later.",
+    `Last time it was ${lastSide}. Where to this time?`,
+  ],
   choices: {
     professional: {
       label: "💼 Professional",
-      hint: "I'm hiring, or I want to see your work",
-      reply: "Hiring? Give me a second, I'll put the suit on.",
+      hint: "I'm hiring, or I want to see his work",
+      reply: "Hiring? Give me a second, I'll put the suit on. He'd want me to.",
     },
     personal: {
       label: "🎧 Personal",
-      hint: "I want to know who you are",
+      hint: "I want to know who Manan is",
       reply: "Good pick. Less tie, more Tame Impala.",
     },
   },
@@ -49,7 +61,8 @@ export const globe = {
   showRoute: "Show the route",
   flying: (from: string, to: string) => `Flying ${from} → ${to}`,
   landed: (city: string) => `Landed in ${city}. That's home now.`,
-  bubble: "I live here now",
+  // Said by the wolf, so third person.
+  bubble: "Manan lives here now",
 };
 
 export const hints = {

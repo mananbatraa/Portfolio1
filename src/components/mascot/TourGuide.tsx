@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import WolfMascot from "@/components/mascot/WolfMascot";
+import { wolf } from "@/lib/copy";
 import { tours } from "@/lib/tour";
 
 type Page = keyof typeof tours;
@@ -31,7 +32,7 @@ function useTypewriter(text: string, instant: boolean) {
   return { shown: text.slice(0, count), done: count >= text.length };
 }
 
-// Wolf-Manan walks alongside the page as you scroll. At each section he crosses to his
+// Manan's wolf assistant walks alongside the page as you scroll. At each section he crosses to his
 // spot, points at it and says a line in a speech bubble. He can be muted or sent away.
 export default function TourGuide({ page }: { page: Page }) {
   const stops = tours[page];
@@ -161,7 +162,7 @@ export default function TourGuide({ page }: { page: Page }) {
             aria-live="polite"
           >
             <span className="absolute -top-3 left-3 rounded border-2 border-accent bg-ground px-2 font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-accent">
-              Manan
+              {wolf.name}
             </span>
             <p className="font-mono text-[13px] leading-relaxed text-white md:text-sm">
               {shown}
@@ -181,7 +182,7 @@ export default function TourGuide({ page }: { page: Page }) {
           pointAt={side === "left" ? 0.7 : -0.7}
           facing={facing}
           pokeable
-          label={`Manan as a wolf tour guide in his ${page === "personal" ? "hoodie" : "suit"}`}
+          label={wolf.label(page)}
         />
       </div>
 
