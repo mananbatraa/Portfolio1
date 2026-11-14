@@ -1,5 +1,6 @@
 import RevealText from "@/components/RevealText";
 import Section from "@/components/Section";
+import Sides from "@/components/sections/Sides";
 import { education, profile } from "@/lib/content";
 
 export default function Contact() {
@@ -12,10 +13,12 @@ export default function Contact() {
 
   return (
     <Section id="contact" index={6} kicker="Let's build" span={6} className="items-center text-center">
-      <RevealText text="LET'S BUILD SOMETHING" className="justify-center font-display text-6xl md:text-9xl" />
+      <RevealText text="TWO SIDES OF ME" className="mb-10 justify-center font-display text-5xl md:text-8xl" />
+      <Sides />
+      <p className="mt-16 font-display text-3xl md:text-5xl">LET&apos;S BUILD SOMETHING</p>
       <a
         href={`mailto:${profile.email}`}
-        className="mt-10 rounded-full bg-accent px-8 py-4 text-lg font-semibold text-ground transition hover:shadow-[0_0_40px_rgb(var(--accent)/0.6)]"
+        className="mt-6 rounded-full bg-accent px-8 py-4 text-lg font-semibold text-ground transition hover:shadow-[0_0_40px_rgb(var(--accent)/0.6)]"
       >
         {profile.email}
       </a>
