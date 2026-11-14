@@ -4,6 +4,7 @@ import { Html } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
+import Wolf from "@/components/mascot/Wolf";
 import { LAND_DOTS } from "@/lib/land-dots";
 
 export type Stop = { city: string; lat: number; lon: number };
@@ -16,12 +17,17 @@ type Props = {
   // Bumped to restart the flight from the first stop.
   replay: number;
   calm: boolean;
+  // Called with the leg being flown, or with the number of legs once the plane has landed.
   onLeg?: (leg: number) => void;
 };
 
 const R = 1;
 const LEG_SECONDS = [3.2, 6.5];
-const PAUSE = 1.2;
+// Stopover at each city between legs.
+const PAUSE = 0.9;
+// Landing: the plane fades out and the wolf pops up at the last stop.
+const LAND_SECONDS = 0.7;
+const WOLF_SCALE = 0.15;
 
 // Latitude/longitude to a point on the globe. Longitude 0 faces +z.
 function toVec(lat: number, lon: number, r = R) {
@@ -152,7 +158,23 @@ function World({ stops, accent, focus, replay, calm, onLeg }: Props) {
   const plane = useRef<THREE.Group>(null);
   const labels = useRef<(HTMLDivElement | null)[]>([]);
   const clock = useRef({ start: 0, leg: -1 });
-  const tmp = useMemo(() => ({ v: new THREE.Vector3(), q: new THREE.Quaternion(), look: new THREE.Matrix4(), up: new THREE.Vector3(), e: new THREE.Euler() }), []);
+  const wolf = useRef<THREE.Group>(null);
+  const bubble = useRef<HTMLDivElement>(null);
+  const wolfAction = useRef<"idle" | "wave">("idle");
+  const [action, setAction] = useState<"idle" | "wave">("idle");
+  const tmp = useMemo(
+    () => ({
+      v: new THREE.Vector3(),
+      q: new THREE.Quaternion(),
+      inv: new THREE.Quaternion(),
+      look: new THREE.Matrix4(),
+      up: new THREE.Vector3(),
+      fwd: new THREE.Vector3(),
+      side: new THREE.Vector3(),
+      e: new THREE.Euler(),
+    }),
+    [],
+  );
 
   const points = useMemo(() => stops.map((s) => toVec(s.lat, s.lon)), [stops]);
   const arcs = useMemo(() => points.slice(1).map((p, i) => arcPoints(points[i], p)), [points]);
@@ -178,30 +200,37 @@ function World({ stops, accent, focus, replay, calm, onLeg }: Props) {
   useFrame((state, dt) => {
     const t = state.clock.elapsedTime;
     if (clock.current.start < 0) clock.current.start = t;
-    const total = LEG_SECONDS.reduce((a, b) => a + b, 0) + PAUSE * 2;
-    let e = calm ? Infinity : (t - clock.current.start) % total;
+    let e = calm ? Infinity : t - clock.current.start;
 
-    // Which leg the plane is on, and how far along it.
+    // Which leg the plane is on and how far along it. The flight plays once and ends at the last stop.
     let leg = arcs.length - 1;
     let u = 1;
+    let landed = true;
     for (let i = 0; i < arcs.length; i++) {
       const d = LEG_SECONDS[i] ?? 4;
       if (e < d) {
         leg = i;
         u = e / d;
+        landed = false;
         break;
       }
       e -= d;
-      if (e < PAUSE / arcs.length) {
-        leg = i;
-        u = 1;
-        break;
+      if (i < arcs.length - 1) {
+        if (e < PAUSE) {
+          leg = i;
+          u = 1;
+          landed = false;
+          break;
+        }
+        e -= PAUSE;
       }
-      e -= PAUSE / arcs.length;
     }
-    if (clock.current.leg !== leg) {
-      clock.current.leg = leg;
-      onLeg?.(leg);
+    // After the last leg, e is the time since touchdown.
+    const sinceLanding = landed ? (calm ? LAND_SECONDS : e) : 0;
+    const status = landed ? arcs.length : leg;
+    if (clock.current.leg !== status) {
+      clock.current.leg = status;
+      onLeg?.(status);
     }
     const ease = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
 
@@ -221,16 +250,48 @@ function World({ stops, accent, focus, replay, calm, onLeg }: Props) {
     plane.current!.position.copy(pos);
     tmp.up.copy(pos).normalize();
     tmp.look.lookAt(next, pos, tmp.up);
+    // Matrix4.lookAt points +z from `pos` toward `next`, and the plane's nose is +z.
     plane.current!.quaternion.setFromRotationMatrix(tmp.look);
-    plane.current!.rotateY(Math.PI);
+    const land = Math.min(1, sinceLanding / LAND_SECONDS);
+    plane.current!.scale.setScalar(1 - land);
+    plane.current!.visible = land < 1;
+
+    // The wolf pops up at the last stop once the plane is down, with a little overshoot.
+    const pop = Math.min(1, Math.max(0, (sinceLanding - LAND_SECONDS * 0.5) / 0.5));
+    const springy = pop === 0 ? 0 : 1 + Math.sin(pop * Math.PI) * 0.25 * (1 - pop) - (1 - pop) * (1 - pop);
+    const w = wolf.current!;
+    w.visible = pop > 0;
+    w.scale.setScalar(WOLF_SCALE * Math.max(0, springy));
+    // Stand on the surface (feet down toward the centre) and face the viewer.
+    const home = points[points.length - 1];
+    w.position.copy(home);
+    const upW = tmp.up.copy(home).normalize().applyQuaternion(globe.current!.quaternion);
+    const fwdW = tmp.fwd.set(0, 0, 1).addScaledVector(upW, -upW.z).normalize();
+    tmp.look.makeBasis(tmp.side.crossVectors(upW, fwdW), upW, fwdW);
+    w.quaternion.setFromRotationMatrix(tmp.look).premultiply(tmp.inv.copy(globe.current!.quaternion).invert());
+    if (bubble.current) bubble.current.style.opacity = pop >= 1 ? "1" : "0";
+    if (wolfAction.current !== (pop > 0 && sinceLanding < 4 ? "wave" : "idle")) {
+      wolfAction.current = pop > 0 && sinceLanding < 4 ? "wave" : "idle";
+      setAction(wolfAction.current);
+    }
 
     // Turn the globe so the plane (or the focused city) faces the camera, tilted a little.
     // Yaw the target's longitude to the front, then pitch its latitude to just above centre,
     // so north always stays up.
-    const target = (focus !== null ? points[focus] : pos).clone().normalize();
+    const target = (focus !== null ? points[focus] : landed ? points[points.length - 1] : pos).clone().normalize();
     const lat = Math.asin(target.y);
     const lon = Math.atan2(target.x, target.z);
-    const want = tmp.q.setFromEuler(tmp.e.set(lat - 0.25, -lon, 0, "XYZ"));
+    // Once landed, roll the last stop up toward the top edge so the wolf stands on the horizon
+    // in profile instead of being seen from straight above.
+    const pitch = landed && focus === null ? 0.5 : 0.25;
+    const want = tmp.q.setFromEuler(tmp.e.set(lat - pitch, -lon, 0, "XYZ"));
+    // Lean in a little once landed, so the wolf is easy to see.
+    const camZ = landed && focus === null ? 3.0 : 3.4;
+    const camY = landed && focus === null ? 0.4 : 0;
+    const k = calm ? 1 : 1 - Math.exp(-dt * 2);
+    state.camera.position.z += (camZ - state.camera.position.z) * k;
+    state.camera.position.y += (camY - state.camera.position.y) * k;
+    state.camera.lookAt(0, state.camera.position.y, 0);
     globe.current!.quaternion.slerp(want, calm ? 1 : 1 - Math.exp(-dt * (focus !== null ? 4 : 1.8)));
 
     // Fade labels on the far side of the planet.
@@ -238,7 +299,8 @@ function World({ stops, accent, focus, replay, calm, onLeg }: Props) {
       const el = labels.current[k];
       if (!el) return;
       const facing = tmp.v.copy(p).applyQuaternion(globe.current!.quaternion).z;
-      el.style.opacity = facing > 0.35 ? "1" : "0";
+      const coveredByWolf = landed && k === points.length - 1;
+      el.style.opacity = facing > 0.35 && !coveredByWolf ? "1" : "0";
     });
   });
 
@@ -262,6 +324,18 @@ function World({ stops, accent, focus, replay, calm, onLeg }: Props) {
       <group ref={plane}>
         <Plane color={accent} />
       </group>
+      <group ref={wolf} visible={false}>
+        <Wolf outfit="personal" action={action} accent={accent} calm={calm} />
+        <Html position={[0, 3.9, 0]} center zIndexRange={[30, 0]} style={{ pointerEvents: "none" }}>
+          <div
+            ref={bubble}
+            className="relative whitespace-nowrap rounded-xl border border-white/15 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-900 opacity-0 shadow-lg transition-opacity duration-500"
+          >
+            📍 Currently here!
+            <span className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-white" />
+          </div>
+        </Html>
+      </group>
     </group>
   );
 }
@@ -277,7 +351,7 @@ export default function GlobeScene(props: Props) {
   }, []);
 
   return (
-    <div ref={wrap} className="absolute inset-0">
+    <div ref={wrap} className="absolute inset-0 [mask-image:linear-gradient(to_bottom,black_82%,transparent)]">
       <Canvas
         frameloop={visible ? "always" : "never"}
         dpr={[1, 1.75]}
@@ -286,6 +360,8 @@ export default function GlobeScene(props: Props) {
       >
         <ambientLight intensity={0.6} />
         <directionalLight position={[3, 2, 4]} intensity={2} />
+        {/* Key light from the front-top so the wolf reads on the dark planet. */}
+        <directionalLight position={[0, 3, 5]} intensity={1.6} />
         <World {...props} />
       </Canvas>
     </div>
