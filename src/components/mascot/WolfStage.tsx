@@ -66,18 +66,21 @@ export default function WolfStage({
       role="img"
       aria-label={label}
       onClick={pokeable ? poke : undefined}
-      style={pokeable ? { cursor: "pointer" } : undefined}
+      style={{
+        // A soft spotlight in the accent colour so the dark outfits read on dark pages.
+        backgroundImage: `radial-gradient(ellipse 45% 50% at 50% 55%, ${rim}2e, transparent 70%)`,
+        cursor: pokeable ? "pointer" : undefined,
+      }}
       title={pokeable ? "Say hi" : undefined}
     >
       <Canvas dpr={[1, 2]} camera={{ position: [0, 1.35, 6.2], fov: 30 }} gl={{ antialias: true, alpha: true }}
         onCreated={({ camera }) => camera.lookAt(0, 1.3, 0)}
       >
-        <hemisphereLight args={["#e6ecff", "#1a1a22", 1.1]} />
-        <directionalLight position={[2.5, 4, 5]} intensity={2.8} />
-        <directionalLight position={[-2, 1, 4]} intensity={0.8} />
-        <directionalLight position={[-3.5, 2.5, -3]} intensity={3} color={rim} />
-        <directionalLight position={[3.5, 1.5, -2.5]} intensity={1.6} color={rim} />
-        <Wolf {...wolf} action={waving ? "wave" : action} calm={calm} />
+        {/* Cel shading wants simple light: a soft fill, one key, and an accent rim. */}
+        <ambientLight intensity={1.1} />
+        <directionalLight position={[2.5, 4, 5]} intensity={2.2} />
+        <directionalLight position={[-3, 2.5, -3]} intensity={2.2} color={rim} />
+        <Wolf {...wolf} accent={wolf.accent ?? rim} action={waving ? "wave" : action} calm={calm} />
         <ContactShadows position={[0, 0, 0]} opacity={0.55} scale={3.5} blur={2.4} far={1.5} />
       </Canvas>
     </div>
