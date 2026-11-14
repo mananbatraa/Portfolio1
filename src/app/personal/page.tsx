@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
+import FlightGlobe from "@/components/personal/FlightGlobe";
 import Interests from "@/components/personal/Interests";
 import Journey from "@/components/personal/Journey";
 import Memories from "@/components/personal/Memories";
@@ -17,6 +18,7 @@ export default function PersonalPage() {
       <PersonalHero />
       <NowStrip />
       <Interests />
+      <FlightGlobe />
       <Journey />
       <Memories />
     </PageShell>

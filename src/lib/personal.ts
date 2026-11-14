@@ -63,7 +63,7 @@ export const nowFacts = [
 
 // The places that shaped me, shown as a horizontal journey.
 export const journey = [
-  { year: "Before 2021", place: "India", note: "Where it all started. Family, friends and the first lines of code." },
+  { year: "Before 2021", place: "Faridabad", note: "Home. Family, friends and the first lines of code." },
   { year: "2021 – 2025", place: "Vellore", note: "Four years at VIT, the friends I still call first." },
   { year: "Early 2025", place: "Delhi", note: "Built parking routing for Kumbh Mela crowds at Buntikki." },
   { year: "2025 →", place: "Tempe", note: "Moved across the world for an MS at Arizona State." },
@@ -87,4 +87,11 @@ export const memories: Memory[] = [
   { src: "", caption: "Late-night food run", place: "", date: "" },
   { src: "", caption: "Hackathon all-nighter", place: "", date: "" },
   { src: "", caption: "Summer on the coast", place: "Goleta", date: "2026" },
+];
+
+// The flight on the Personal page globe, in order. Coordinates are city centres.
+export const flight = [
+  { city: "Faridabad", lat: 28.41, lon: 77.32, years: "Home", note: "Where it all started." },
+  { city: "Vellore", lat: 12.92, lon: 79.13, years: "2021 – 2025", note: "BTech at VIT." },
+  { city: "Tempe", lat: 33.43, lon: -111.94, years: "2025 →", note: "MS CS at Arizona State." },
 ];
