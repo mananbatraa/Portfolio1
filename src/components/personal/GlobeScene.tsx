@@ -27,7 +27,10 @@ const LEG_SECONDS = [3.2, 6.5];
 const PAUSE = 0.9;
 // Landing: the plane fades out and the wolf pops up at the last stop.
 const LAND_SECONDS = 0.7;
-const WOLF_SCALE = 0.15;
+// The wolf is about 2.4 units tall, so this makes him a small pin-sized figure on the planet.
+const WOLF_SCALE = 0.055;
+// Fraction of the final route left undrawn after landing, so the trail stops short of the wolf.
+const TRAIL_GAP = 0.16;
 
 // Latitude/longitude to a point on the globe. Longitude 0 faces +z.
 function toVec(lat: number, lon: number, r = R) {
@@ -188,10 +191,12 @@ function World({ stops, accent, focus, replay, calm, onLeg }: Props) {
     [geos, accent],
   );
   const ghost = useMemo(
-    () => geos.map((g) => new THREE.Line(g, new THREE.LineDashedMaterial({ color: "#ffffff", transparent: true, opacity: 0.18, dashSize: 0.02, gapSize: 0.02 })).computeLineDistances()),
+    // Own geometry copies, so trimming the drawn trail never trims the dashed guide.
+    () => geos.map((g) => new THREE.Line(g.clone(), new THREE.LineDashedMaterial({ color: "#ffffff", transparent: true, opacity: 0.18, dashSize: 0.02, gapSize: 0.02 })).computeLineDistances()),
     [geos],
   );
   useEffect(() => () => geos.forEach((g) => g.dispose()), [geos]);
+  useEffect(() => () => ghost.forEach((l) => l.geometry.dispose()), [ghost]);
 
   useEffect(() => {
     clock.current.start = -1;
@@ -235,11 +240,14 @@ function World({ stops, accent, focus, replay, calm, onLeg }: Props) {
     const ease = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
 
     // Draw each trail up to where the plane has been.
+    const last = arcs.length - 1;
+    const gap = (i: number, n: number) => (landed && i === last ? Math.floor(n * TRAIL_GAP * Math.min(1, sinceLanding / LAND_SECONDS)) : 0);
     lines.forEach((line, i) => {
       const n = arcs[i].length;
       const upto = i < leg ? n : i === leg ? Math.max(2, Math.floor(ease * (n - 1)) + 1) : 0;
-      line.geometry.setDrawRange(0, upto);
+      line.geometry.setDrawRange(0, upto - gap(i, n));
     });
+    ghost.forEach((line, i) => line.geometry.setDrawRange(0, arcs[i].length - (i === last && landed ? Math.floor(arcs[i].length * TRAIL_GAP) : 0)));
 
     // Place the plane on the arc, nose along the path, belly to the planet.
     const arc = arcs[leg];
@@ -266,10 +274,14 @@ function World({ stops, accent, focus, replay, calm, onLeg }: Props) {
     const home = points[points.length - 1];
     w.position.copy(home);
     const upW = tmp.up.copy(home).normalize().applyQuaternion(globe.current!.quaternion);
-    const fwdW = tmp.fwd.set(0, 0, 1).addScaledVector(upW, -upW.z).normalize();
+    // Face the camera: its direction from the planet, flattened onto the ground at Tempe.
+    tmp.fwd.copy(state.camera.position).normalize();
+    const fwdW = tmp.fwd.addScaledVector(upW, -tmp.fwd.dot(upW)).normalize();
     tmp.look.makeBasis(tmp.side.crossVectors(upW, fwdW), upW, fwdW);
     w.quaternion.setFromRotationMatrix(tmp.look).premultiply(tmp.inv.copy(globe.current!.quaternion).invert());
-    if (bubble.current) bubble.current.style.opacity = pop >= 1 ? "1" : "0";
+    // Hide the bubble when Tempe turns to the far side, since HTML is not occluded by the planet.
+    const homeFacing = upW.dot(tmp.side.copy(state.camera.position).normalize());
+    if (bubble.current) bubble.current.style.opacity = pop >= 1 && homeFacing > 0.15 ? "1" : "0";
     if (wolfAction.current !== (pop > 0 && sinceLanding < 4 ? "wave" : "idle")) {
       wolfAction.current = pop > 0 && sinceLanding < 4 ? "wave" : "idle";
       setAction(wolfAction.current);
@@ -278,16 +290,16 @@ function World({ stops, accent, focus, replay, calm, onLeg }: Props) {
     // Turn the globe so the plane (or the focused city) faces the camera, tilted a little.
     // Yaw the target's longitude to the front, then pitch its latitude to just above centre,
     // so north always stays up.
+    // After landing, the "home" view puts Tempe on the top edge of the planet and leans the camera in,
+    // so the wolf stands upright against the sky instead of being seen from straight above.
+    const homeView = landed && (focus === null || focus === points.length - 1);
     const target = (focus !== null ? points[focus] : landed ? points[points.length - 1] : pos).clone().normalize();
     const lat = Math.asin(target.y);
     const lon = Math.atan2(target.x, target.z);
-    // Once landed, roll the last stop up toward the top edge so the wolf stands on the horizon
-    // in profile instead of being seen from straight above.
-    const pitch = landed && focus === null ? 0.5 : 0.25;
+    const pitch = homeView ? 1.15 : 0.25;
     const want = tmp.q.setFromEuler(tmp.e.set(lat - pitch, -lon, 0, "XYZ"));
-    // Lean in a little once landed, so the wolf is easy to see.
-    const camZ = landed && focus === null ? 3.0 : 3.4;
-    const camY = landed && focus === null ? 0.4 : 0;
+    const camZ = homeView ? 2.7 : 3.4;
+    const camY = homeView ? 0.72 : 0;
     const k = calm ? 1 : 1 - Math.exp(-dt * 2);
     state.camera.position.z += (camZ - state.camera.position.z) * k;
     state.camera.position.y += (camY - state.camera.position.y) * k;
@@ -326,7 +338,7 @@ function World({ stops, accent, focus, replay, calm, onLeg }: Props) {
       </group>
       <group ref={wolf} visible={false}>
         <Wolf outfit="personal" action={action} accent={accent} calm={calm} />
-        <Html position={[0, 3.9, 0]} center zIndexRange={[30, 0]} style={{ pointerEvents: "none" }}>
+        <Html position={[0, 3.6, 0]} center zIndexRange={[30, 0]} style={{ pointerEvents: "none" }}>
           <div
             ref={bubble}
             className="relative whitespace-nowrap rounded-xl border border-white/15 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-900 opacity-0 shadow-lg transition-opacity duration-500"
