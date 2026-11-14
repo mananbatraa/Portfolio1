@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import WolfMascot from "@/components/mascot/WolfMascot";
 
-type Path = "personal" | "professional" | "explore";
+type Path = "personal" | "professional";
 
-const CHOICES: { id: Path; key: string; label: string; hint: string; href?: string; reply: string }[] = [
+const CHOICES: { id: Path; key: string; label: string; hint: string; href: string; reply: string }[] = [
   {
     id: "professional",
     key: "1",
@@ -24,13 +24,6 @@ const CHOICES: { id: Path; key: string; label: string; hint: string; href?: stri
     href: "/personal",
     reply: "Ooh, the good stuff. Music, cities, friends. Follow me!",
   },
-  {
-    id: "explore",
-    key: "3",
-    label: "🧭 Just exploring",
-    hint: "Show me the whole place",
-    reply: "A wanderer. Scroll down and watch the laptop come apart.",
-  },
 ];
 
 const STORAGE_KEY = "mb-quest-path";
@@ -38,7 +31,7 @@ const STORAGE_KEY = "mb-quest-path";
 function readLast(): Path | null {
   try {
     const v = sessionStorage.getItem(STORAGE_KEY);
-    return v === "personal" || v === "professional" || v === "explore" ? v : null;
+    return v === "personal" || v === "professional" ? v : null;
   } catch {
     return null;
   }
@@ -99,8 +92,14 @@ export default function Quest({ onClose }: { onClose: () => void }) {
 
   // The wolf previews the outfit for whichever side is in focus, and points at it.
   const outfit = (picked ?? (asking ? CHOICES[focus] : null))?.id === "professional" ? "professional" : "personal";
-  const wolfAction = asking ? "point" : (step === 0 && !picked) || picked?.id === "explore" ? "wave" : "idle";
-  const pointAt = [-0.8, 0, 0.8][focus] ?? 0;
+  const wolfAction = asking ? "point" : step === 0 && !picked ? "wave" : "idle";
+  const pointAt = [-0.6, 0.6][focus] ?? 0;
+
+  // There is no home page any more, so skipping still lands on a side: the last pick, or the work.
+  const skip = useCallback(() => {
+    onClose();
+    router.push(last === "personal" ? "/personal" : "/professional");
+  }, [onClose, router, last]);
 
   // Lock the page behind the scene.
   useEffect(() => {
@@ -126,7 +125,7 @@ export default function Quest({ onClose }: { onClose: () => void }) {
     if (!picked || !done) return;
     const t = setTimeout(() => {
       onClose();
-      if (picked.href) router.push(picked.href);
+      router.push(picked.href);
     }, 1100);
     return () => clearTimeout(t);
   }, [picked, done, onClose, router]);
@@ -138,7 +137,7 @@ export default function Quest({ onClose }: { onClose: () => void }) {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") return onClose();
+      if (e.key === "Escape") return skip();
       if (asking) {
         const byKey = CHOICES.find((c) => c.key === e.key);
         if (byKey) return choose(byKey);
@@ -157,7 +156,7 @@ export default function Quest({ onClose }: { onClose: () => void }) {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [asking, advance, choose, focus, onClose]);
+  }, [asking, advance, choose, focus, skip]);
 
   return (
     <motion.div
@@ -177,7 +176,7 @@ export default function Quest({ onClose }: { onClose: () => void }) {
       <button
         onClick={(e) => {
           e.stopPropagation();
-          onClose();
+          skip();
         }}
         className="absolute right-4 top-4 rounded-full border border-white/15 bg-ground/60 px-4 py-2 font-mono text-xs uppercase tracking-[0.2em] text-white/70 transition hover:border-accent hover:text-accent md:right-8 md:top-8"
       >
@@ -232,7 +231,7 @@ export default function Quest({ onClose }: { onClose: () => void }) {
             {asking ? (
               <motion.ul
                 key="choices"
-                className="mt-5 grid gap-2 md:grid-cols-3"
+                className="mt-5 grid gap-2 md:grid-cols-2"
                 initial="hidden"
                 animate="show"
                 transition={{ staggerChildren: 0.08 }}

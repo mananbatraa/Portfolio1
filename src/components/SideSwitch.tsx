@@ -6,12 +6,11 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 export const SIDES = [
-  { label: "Home", short: "Home", href: "/" },
   { label: "Personal", short: "Me", href: "/personal" },
   { label: "Professional", short: "Work", href: "/professional" },
 ] as const;
 
-// The segmented switch between the home film, the personal side and the professional side.
+// The segmented switch between the personal side and the professional side.
 // The highlight pill glides between options with a shared layout animation.
 export default function SideSwitch({ className }: { className?: string }) {
   const pathname = usePathname();

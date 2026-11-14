@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { navState } from "@/lib/nav-state";
 
-const LABELS: Record<string, string> = { "/": "HOME", "/personal": "PERSONAL", "/professional": "PROFESSIONAL" };
+const LABELS: Record<string, string> = { "/personal": "PERSONAL", "/professional": "PROFESSIONAL" };
 const EASE = [0.76, 0, 0.24, 1] as const;
 
 
