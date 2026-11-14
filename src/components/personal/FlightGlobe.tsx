@@ -32,7 +32,8 @@ export default function FlightGlobe() {
   const [focus, setFocus] = useState<number | null>(null);
   const [replay, setReplay] = useState(0);
   const [leg, setLeg] = useState(0);
-  const flying = focus === null && !calm;
+  const landed = leg >= legs.length;
+  const flying = focus === null && !calm && !landed;
 
   return (
     <section id="flight" className="px-5 py-28 md:px-16">
@@ -41,11 +42,11 @@ export default function FlightGlobe() {
           <SectionHeading kicker="Flight log" title="FARIDABAD TO TEMPE" className="mb-6" />
           <p className="max-w-md text-white/70">
             Two flights, three homes and about <span className="font-semibold text-white">{total.toLocaleString("en-US")} km</span> of sky. Tap a stop to look at
-            it, or let the plane fly the route.
+            it, or watch the plane fly the route to where I am now.
           </p>
           <ol className="mt-8 space-y-3">
             {flight.map((s, i) => {
-              const active = focus === i || (flying && (i === leg || i === leg + 1));
+              const active = focus === i || (flying && (i === leg || i === leg + 1)) || (focus === null && landed && i === flight.length - 1);
               return (
                 <FadeIn key={s.city} delay={i * 0.08}>
                   <button
@@ -93,15 +94,15 @@ export default function FlightGlobe() {
           <GlobeScene stops={flight} accent={ACCENT} focus={focus} replay={replay} calm={calm} onLeg={setLeg} />
           <div className="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center">
           <AnimatePresence mode="wait">
-            {flying && (
+            {focus === null && (flying || landed) && (
               <motion.p
-                key={leg}
+                key={landed ? "landed" : leg}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 className="whitespace-nowrap rounded-full border border-white/10 bg-ground/80 px-4 py-1.5 font-mono text-xs text-white/80 backdrop-blur-md"
               >
-                Now flying: {flight[leg].city} → {flight[leg + 1]?.city}
+                {landed ? `📍 Landed. Currently in ${flight[flight.length - 1].city}` : `Now flying: ${flight[leg].city} → ${flight[leg + 1]?.city}`}
               </motion.p>
             )}
           </AnimatePresence>
