@@ -1,7 +1,7 @@
 import CursorTrail from "@/components/CursorTrail";
 import Intro from "@/components/Intro";
 
-// There is no home page: the site opens on the name intro, then wolf-Manan asks whether
+// There is no home page: the site opens on the name intro, then Manan's wolf assistant asks whether
 // you're here for the personal side or the professional side and takes you there.
 // (The old home film, LaptopStage and sections/*, is kept in the repo but no longer routed.)
 export default function Landing() {

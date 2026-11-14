@@ -6,10 +6,11 @@ import Journey from "@/components/personal/Journey";
 import Memories from "@/components/personal/Memories";
 import NowStrip from "@/components/personal/NowStrip";
 import PersonalHero from "@/components/personal/PersonalHero";
+import { meta } from "@/lib/copy";
 
 export const metadata: Metadata = {
-  title: "Manan Batra · Personal",
-  description: "Who Manan is outside work: interests, the places that shaped him, and photos with friends.",
+  title: meta.personal.title,
+  description: meta.personal.description,
 };
 
 export default function PersonalPage() {

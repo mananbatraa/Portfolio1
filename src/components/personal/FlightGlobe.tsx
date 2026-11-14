@@ -7,6 +7,7 @@ import FadeIn from "@/components/motion/FadeIn";
 import SectionHeading from "@/components/motion/SectionHeading";
 import { flight } from "@/lib/personal";
 import { cn } from "@/lib/utils";
+import { globe, headings } from "@/lib/copy";
 
 // WebGL only runs in the browser, and the globe loads once the page is up.
 const GlobeScene = dynamic(() => import("@/components/personal/GlobeScene"), {
@@ -39,10 +40,9 @@ export default function FlightGlobe() {
     <section id="flight" className="px-5 py-28 md:px-16">
       <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
         <div>
-          <SectionHeading kicker="Flight log" title="FARIDABAD TO TEMPE" className="mb-6" />
+          <SectionHeading {...headings.flight} className="mb-6" />
           <p className="max-w-md text-white/70">
-            Two flights, three homes and about <span className="font-semibold text-white">{total.toLocaleString("en-US")} km</span> of sky. Tap a stop to look at
-            it, or watch the plane fly the route to where I am now.
+            {globe.intro(total.toLocaleString("en-US"))}
           </p>
           <ol className="mt-8 space-y-3">
             {flight.map((s, i) => {
@@ -85,7 +85,7 @@ export default function FlightGlobe() {
               }}
               className="rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-ground transition hover:shadow-[0_0_24px_rgb(var(--accent)/0.6)]"
             >
-              {calm ? "Show the route" : "Replay the flight ✈"}
+              {calm ? globe.showRoute : globe.replay}
             </button>
           </div>
         </div>
@@ -102,7 +102,7 @@ export default function FlightGlobe() {
                 exit={{ opacity: 0, y: -8 }}
                 className="whitespace-nowrap rounded-full border border-white/10 bg-ground/80 px-4 py-1.5 font-mono text-xs text-white/80 backdrop-blur-md"
               >
-                {landed ? `📍 Landed. Currently in ${flight[flight.length - 1].city}` : `Now flying: ${flight[leg].city} → ${flight[leg + 1]?.city}`}
+                {landed ? globe.landed(flight[flight.length - 1].city) : globe.flying(flight[leg].city, flight[leg + 1]?.city ?? "")}
               </motion.p>
             )}
           </AnimatePresence>
