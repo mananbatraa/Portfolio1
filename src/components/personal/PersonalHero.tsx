@@ -4,7 +4,6 @@ import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
 import RevealText from "@/components/RevealText";
-import WolfMascot from "@/components/mascot/WolfMascot";
 import { about } from "@/lib/personal";
 
 export default function PersonalHero() {
@@ -12,7 +11,7 @@ export default function PersonalHero() {
   const bounds = useRef<HTMLDivElement>(null);
 
   return (
-    <section ref={bounds} className="relative flex min-h-screen flex-col justify-center gap-12 px-5 pb-16 pt-28 md:flex-row md:items-center md:px-16">
+    <section ref={bounds} id="hello" className="relative flex min-h-screen flex-col justify-center gap-12 px-5 pb-16 pt-28 md:flex-row md:items-center md:px-16">
       <div className="md:w-3/5">
         <p className="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-accent">The person behind the code</p>
         <RevealText as="h1" text={about.hello.toUpperCase()} className="font-display text-[16vw] leading-[0.88] md:text-[8.5vw]" />
@@ -43,7 +42,7 @@ export default function PersonalHero() {
         </motion.ul>
       </div>
 
-      {/* A polaroid you can toss around, with wolf-Manan in his hoodie beside it. */}
+      {/* A polaroid you can toss around. */}
       <div className="relative flex justify-center pt-4 md:w-2/5 md:pt-0">
         <motion.div
           drag={!reduce}
@@ -65,14 +64,6 @@ export default function PersonalHero() {
           <p className="absolute inset-x-0 bottom-4 text-center font-[cursive] text-lg text-neutral-700">that&apos;s me ✌️</p>
           <span className="absolute -top-3 left-1/2 h-6 w-20 -translate-x-1/2 rotate-2 bg-white/50 backdrop-blur-sm" />
         </motion.div>
-        <WolfMascot
-          className="absolute -bottom-16 right-0 z-10 h-56 w-40 md:-bottom-20 md:-right-10 md:h-80 md:w-56"
-          outfit="personal"
-          rim="#ff8060"
-          autoWave
-          pokeable
-          label="Manan as a wolf in a black MB. hoodie, goggles and Converse"
-        />
       </div>
       <p className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 font-mono text-xs uppercase tracking-[0.3em] text-white/40 md:block">
         Drag the photo · scroll for more ↓

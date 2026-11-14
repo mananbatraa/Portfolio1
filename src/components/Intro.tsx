@@ -26,13 +26,15 @@ export default function Intro({ children }: { children: ReactNode }) {
   const [text, setText] = useState(FROM);
   // Read at first render, before any effect marks the app as mounted.
   const [arrivedInApp] = useState(() => navState.mounted);
-  // The story-mode "why are you here?" scene, shown once the intro lifts on a fresh load.
+  // The story-mode "why are you here?" scene: the landing page's only content.
   const [quest, setQuest] = useState(false);
   const closeQuest = useCallback(() => setQuest(false), []);
 
   useEffect(() => {
     if (playedThisLoad || arrivedInApp) {
+      // The name animation plays once per load, but the question is the whole landing page.
       setPhase("done");
+      setQuest(true);
       return;
     }
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

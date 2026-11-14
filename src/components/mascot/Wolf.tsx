@@ -2,7 +2,7 @@
 
 import { Decal, Outlines } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, type MutableRefObject, type ReactNode } from "react";
 import * as THREE from "three";
 
 // Manan as a chibi techie wolf. Every shape is drawn in code (lathe profiles, painted fur
@@ -10,7 +10,7 @@ import * as THREE from "three";
 // outfits, goggles and joints can all be animated with no model file to download.
 
 export type Outfit = "personal" | "professional";
-export type WolfAction = "idle" | "wave" | "point";
+export type WolfAction = "idle" | "wave" | "point" | "walk";
 
 export type WolfProps = {
   outfit: Outfit;
@@ -18,11 +18,17 @@ export type WolfProps = {
   talking?: boolean;
   /** Where to point, from -1 (screen left) to 1 (screen right). */
   pointAt?: number;
+  /** Which way he faces while walking: -1 screen left, 1 screen right. */
+  facing?: number;
   /** Colour of the dot in the "MB." print. */
   accent?: string;
   /** Turns off the bobbing, wagging and spin for visitors who prefer reduced motion. */
   calm?: boolean;
+  /** Drag-to-spin state written by the stage; the wolf turns by `angle` on top of his own moves. */
+  userSpin?: MutableRefObject<UserSpin>;
 };
+
+export type UserSpin = { angle: number; vel: number; dragging: boolean; releasedAt: number };
 
 // One palette for the whole character.
 export const PALETTE = {
@@ -381,15 +387,16 @@ function Arm({ side, t, g, refs }: { side: 1 | -1; t: Toon; g: ReturnType<typeof
 
 /* ---------- the wolf ---------- */
 
-export default function Wolf({ outfit, action = "idle", talking = false, pointAt = 0, accent = "#ff8060", calm = false }: WolfProps) {
+export default function Wolf({ outfit, action = "idle", talking = false, pointAt = 0, facing = 1, accent = "#ff8060", calm = false, userSpin }: WolfProps) {
   const t = useToon();
   const g = useGeometry();
   const headTex = useHeadTexture();
   const logo = useLogoTexture(accent);
   const suit = useSuitTexture();
 
-  const props = useRef({ outfit, action, talking, pointAt, calm });
-  props.current = { outfit, action, talking, pointAt, calm };
+  const props = useRef({ outfit, action, talking, pointAt, facing, calm });
+  props.current = { outfit, action, talking, pointAt, facing, calm };
+  const legs = useRef<THREE.Group[]>([]);
 
   const root = useRef<THREE.Group>(null);
   const body = useRef<THREE.Group>(null);
@@ -404,7 +411,7 @@ export default function Wolf({ outfit, action = "idle", talking = false, pointAt
   const armR = useRef<ArmRefs>({ shoulder: null, elbow: null, finger: null }).current;
   const armL = useRef<ArmRefs>({ shoulder: null, elbow: null, finger: null }).current;
 
-  const anim = useRef({ shown: outfit, spinFrom: -1, spinTo: outfit, mouth: 0, look: new THREE.Vector2() });
+  const anim = useRef({ shown: outfit, spinFrom: -1, spinTo: outfit, mouth: 0, turn: 0, look: new THREE.Vector2() });
   const outfitParts = useRef<THREE.Object3D[] | null>(null);
 
   // The head follows the cursor anywhere on the page, not only over the canvas.
@@ -448,12 +455,28 @@ export default function Wolf({ outfit, action = "idle", talking = false, pointAt
     for (const o of outfitParts.current) o.visible = o.userData.outfit === a.shown;
 
     const pointing = p.action === "point";
+    const walking = p.action === "walk";
     const waving = p.action === "wave";
     const live = p.calm ? 0 : 1;
     const breathe = Math.sin(time * 2.2);
 
-    root.current.rotation.y = spin + damp(root.current.rotation.y - spin, pointing ? p.pointAt * 0.25 : 0, 4, dt);
-    body.current!.position.y = hop + live * breathe * 0.02;
+    const turn = walking ? p.facing * 1.15 : pointing ? p.pointAt * 0.25 : 0;
+    a.turn = damp(a.turn, turn, 6, dt);
+    // Spun by the visitor: coast with friction, then turn back to face the front.
+    const us = userSpin?.current;
+    if (us && !us.dragging) {
+      us.angle += us.vel * dt;
+      us.vel *= Math.exp(-2.5 * dt);
+      if (Math.abs(us.vel) < 0.4 && performance.now() - us.releasedAt > 1500) {
+        us.vel = 0;
+        us.angle = damp(us.angle, Math.round(us.angle / TAU) * TAU, 3, dt);
+      }
+    }
+    root.current.rotation.y = spin + a.turn + (us ? us.angle : 0);
+    // Walk cycle: legs swing from the hip, a bounce on every step.
+    const stride = walking ? Math.sin(time * 11) : 0;
+    legs.current.forEach((l, i) => (l.rotation.x = damp(l.rotation.x, (i === 0 ? 1 : -1) * stride * 0.55, 20, dt)));
+    body.current!.position.y = hop + live * breathe * 0.02 + (walking ? Math.abs(Math.cos(time * 11)) * 0.06 : 0);
     torso.current!.scale.set(1 + live * breathe * 0.01, 1 + live * Math.sin(time * 2.2 + 0.4) * 0.015, 1);
 
     // Head: follow the cursor, nod while talking, look where it points.
@@ -497,6 +520,10 @@ export default function Wolf({ outfit, action = "idle", talking = false, pointAt
       rx = -0.85;
       rElbow = 0;
     }
+    if (walking) {
+      rx = -stride * 0.5;
+      rElbow = 0.2;
+    }
     armR.shoulder!.rotation.z = damp(armR.shoulder!.rotation.z, rz, 8, dt);
     armR.shoulder!.rotation.x = damp(armR.shoulder!.rotation.x, rx, 8, dt);
     armR.elbow!.rotation.z = damp(armR.elbow!.rotation.z, rElbow, 10, dt);
@@ -504,28 +531,31 @@ export default function Wolf({ outfit, action = "idle", talking = false, pointAt
 
     const gesture = p.talking && !waving ? Math.sin(time * 3.1) * 0.25 * live : 0;
     armL.shoulder!.rotation.z = damp(armL.shoulder!.rotation.z, -0.3 - Math.abs(gesture) - live * breathe * 0.03, 6, dt);
-    armL.shoulder!.rotation.x = damp(armL.shoulder!.rotation.x, p.talking ? -0.35 : 0, 4, dt);
+    armL.shoulder!.rotation.x = damp(armL.shoulder!.rotation.x, walking ? stride * 0.5 : p.talking ? -0.35 : 0, walking ? 12 : 4, dt);
     armL.elbow!.rotation.z = damp(armL.elbow!.rotation.z, p.talking ? -0.6 - gesture : -0.12, 6, dt);
   });
 
   return (
     <group ref={root}>
       <group ref={body}>
-        <Shoe side={1} t={t} g={g} />
-        <Shoe side={-1} t={t} g={g} />
-
-        {/* Legs: joggers with ribbed cuffs, or suit trousers. */}
-        {[1, -1].map((s) => (
-          <group key={s} position={[s * 0.16, 0.4, 0]}>
-            <Part mat={t.get("joggers")} userData={{ outfit: "personal" }}>
-              <capsuleGeometry args={[0.125, 0.16, 6, 16]} />
-            </Part>
-            <Part position-y={-0.1} rotation-x={Math.PI / 2} mat={t.get("rib")} userData={{ outfit: "personal" }}>
-              <torusGeometry args={[0.105, 0.03, 8, 20]} />
-            </Part>
-            <Part mat={t.get("trousers")} userData={{ outfit: "professional" }}>
-              <cylinderGeometry args={[0.13, 0.12, 0.34, 18]} />
-            </Part>
+        {/* Each leg and its shoe swing together from the hip. */}
+        {([1, -1] as const).map((s, i) => (
+          <group key={s} ref={(o) => void (o && (legs.current[i] = o))} position-y={0.55}>
+            <group position-y={-0.55}>
+              <Shoe side={s} t={t} g={g} />
+              {/* Joggers with ribbed cuffs, or suit trousers. */}
+              <group position={[s * 0.16, 0.4, 0]}>
+                <Part mat={t.get("joggers")} userData={{ outfit: "personal" }}>
+                  <capsuleGeometry args={[0.125, 0.16, 6, 16]} />
+                </Part>
+                <Part position-y={-0.1} rotation-x={Math.PI / 2} mat={t.get("rib")} userData={{ outfit: "personal" }}>
+                  <torusGeometry args={[0.105, 0.03, 8, 20]} />
+                </Part>
+                <Part mat={t.get("trousers")} userData={{ outfit: "professional" }}>
+                  <cylinderGeometry args={[0.13, 0.12, 0.34, 18]} />
+                </Part>
+              </group>
+            </group>
           </group>
         ))}
 

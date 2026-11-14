@@ -3,7 +3,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import RevealText from "@/components/RevealText";
-import WolfMascot from "@/components/mascot/WolfMascot";
 import FlipText from "@/components/ui/flip-text";
 import { experience, profile } from "@/lib/content";
 
@@ -17,7 +16,7 @@ export default function ProHero() {
   ].filter(([, href]) => href) as [string, string, boolean][];
 
   return (
-    <section className="flex min-h-screen flex-col-reverse items-start justify-center gap-12 px-5 pb-16 pt-28 md:flex-row md:items-center md:gap-16 md:px-16">
+    <section id="hello" className="flex min-h-screen flex-col-reverse items-start justify-center gap-12 px-5 pb-16 pt-28 md:flex-row md:items-center md:gap-16 md:px-16">
       <div className="md:w-3/5">
         <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs text-accent">
           <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />
@@ -90,13 +89,7 @@ export default function ProHero() {
         >
           🎓 MS CS · ASU
         </motion.span>
-        <WolfMascot
-          className="absolute -bottom-16 -left-12 z-10 h-56 w-40 md:-bottom-20 md:-left-24 md:h-80 md:w-56"
-          outfit="professional"
-          autoWave
-          pokeable
-          label="Manan as a wolf in a black blazer, white shirt and black tie"
-        />
+
       </motion.div>
     </section>
   );

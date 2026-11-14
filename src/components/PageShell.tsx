@@ -4,19 +4,23 @@ import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import MusicPlayer from "@/components/MusicPlayer";
+import CursorTrail from "@/components/CursorTrail";
 import Nav from "@/components/Nav";
+import TourGuide from "@/components/mascot/TourGuide";
 import { profile } from "@/lib/content";
 
 type Props = {
   // "R G B" triple that re-tints every accent on the page.
   accent: string;
+  // Which side this is: picks the wolf guide's outfit and tour.
+  side: "personal" | "professional";
   next: { label: string; href: string; line: string };
   children: ReactNode;
 };
 
 // Frame for the Personal and Professional pages: drifting glow in the page's own
 // colour, a scroll progress bar, the nav, and a hand-off to the other side.
-export default function PageShell({ accent, next, children }: Props) {
+export default function PageShell({ accent, side, next, children }: Props) {
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
@@ -41,8 +45,10 @@ export default function PageShell({ accent, next, children }: Props) {
       <motion.div aria-hidden style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-accent" />
       <Nav solid />
       <MusicPlayer />
+      <TourGuide page={side} />
+      <CursorTrail variant={side === "personal" ? "pastel" : "code"} />
       <main className="relative z-10">{children}</main>
-      <footer className="relative z-10 px-5 pb-24 pt-10 md:px-16">
+      <footer id="next" className="relative z-10 px-5 pb-24 pt-10 md:px-16">
         <Link
           href={next.href}
           className="group block overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-md transition-colors duration-500 hover:border-accent/50 md:p-14"
