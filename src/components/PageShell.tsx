@@ -46,7 +46,7 @@ export default function PageShell({ accent, side, next, children }: Props) {
       <Nav solid />
       <MusicPlayer />
       <TourGuide page={side} />
-      <CursorTrail />
+      <CursorTrail variant={side === "personal" ? "pastel" : "code"} />
       <main className="relative z-10">{children}</main>
       <footer id="next" className="relative z-10 px-5 pb-24 pt-10 md:px-16">
         <Link
