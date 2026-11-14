@@ -9,16 +9,16 @@
 // always talks about Manan in the third person. Page text stays in Manan's own voice.
 export const wolf = {
   // The name tag on his speech bubbles.
-  name: "Guide",
+  name: "Wolfie",
   label: (outfit: "personal" | "professional") =>
-    `Manan's wolf assistant in his ${outfit === "personal" ? "hoodie" : "suit"}`,
+    `Wolfie, Manan's wolf assistant, in his ${outfit === "personal" ? "hoodie" : "suit"}`,
 };
 
 // The question after the name intro.
 export const quest = {
   firstVisit: [
     "Oh, hey. Someone actually clicked the link.",
-    "I'm Manan's assistant. He's not around right now, so you get the wolf.",
+    "I'm Wolfie, Manan's assistant. He's not around right now, so you get me.",
     "I can show you his work, or who he is outside it. Which one?",
   ],
   returning: (lastSide: string) => [
