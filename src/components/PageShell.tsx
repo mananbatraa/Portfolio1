@@ -4,6 +4,7 @@ import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import MusicPlayer from "@/components/MusicPlayer";
+import CursorTrail from "@/components/CursorTrail";
 import Nav from "@/components/Nav";
 import TourGuide from "@/components/mascot/TourGuide";
 import { profile } from "@/lib/content";
@@ -45,6 +46,7 @@ export default function PageShell({ accent, side, next, children }: Props) {
       <Nav solid />
       <MusicPlayer />
       <TourGuide page={side} />
+      <CursorTrail />
       <main className="relative z-10">{children}</main>
       <footer id="next" className="relative z-10 px-5 pb-24 pt-10 md:px-16">
         <Link

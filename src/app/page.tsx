@@ -1,3 +1,4 @@
+import CursorTrail from "@/components/CursorTrail";
 import Intro from "@/components/Intro";
 
 // There is no home page: the site opens on the name intro, then wolf-Manan asks whether
@@ -6,6 +7,7 @@ import Intro from "@/components/Intro";
 export default function Landing() {
   return (
     <Intro>
+      <CursorTrail />
       <main className="relative min-h-screen overflow-hidden bg-ground">
         <div aria-hidden className="absolute left-1/2 top-1/3 h-[60vw] w-[60vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/10 blur-[140px]" />
         <div
