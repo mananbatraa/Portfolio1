@@ -2,7 +2,7 @@
 
 import { Decal, Outlines } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, type MutableRefObject, type ReactNode } from "react";
 import * as THREE from "three";
 
 // Manan as a chibi techie wolf. Every shape is drawn in code (lathe profiles, painted fur
@@ -24,7 +24,11 @@ export type WolfProps = {
   accent?: string;
   /** Turns off the bobbing, wagging and spin for visitors who prefer reduced motion. */
   calm?: boolean;
+  /** Drag-to-spin state written by the stage; the wolf turns by `angle` on top of his own moves. */
+  userSpin?: MutableRefObject<UserSpin>;
 };
+
+export type UserSpin = { angle: number; vel: number; dragging: boolean; releasedAt: number };
 
 // One palette for the whole character.
 export const PALETTE = {
@@ -383,7 +387,7 @@ function Arm({ side, t, g, refs }: { side: 1 | -1; t: Toon; g: ReturnType<typeof
 
 /* ---------- the wolf ---------- */
 
-export default function Wolf({ outfit, action = "idle", talking = false, pointAt = 0, facing = 1, accent = "#ff8060", calm = false }: WolfProps) {
+export default function Wolf({ outfit, action = "idle", talking = false, pointAt = 0, facing = 1, accent = "#ff8060", calm = false, userSpin }: WolfProps) {
   const t = useToon();
   const g = useGeometry();
   const headTex = useHeadTexture();
@@ -407,7 +411,7 @@ export default function Wolf({ outfit, action = "idle", talking = false, pointAt
   const armR = useRef<ArmRefs>({ shoulder: null, elbow: null, finger: null }).current;
   const armL = useRef<ArmRefs>({ shoulder: null, elbow: null, finger: null }).current;
 
-  const anim = useRef({ shown: outfit, spinFrom: -1, spinTo: outfit, mouth: 0, look: new THREE.Vector2() });
+  const anim = useRef({ shown: outfit, spinFrom: -1, spinTo: outfit, mouth: 0, turn: 0, look: new THREE.Vector2() });
   const outfitParts = useRef<THREE.Object3D[] | null>(null);
 
   // The head follows the cursor anywhere on the page, not only over the canvas.
@@ -457,7 +461,18 @@ export default function Wolf({ outfit, action = "idle", talking = false, pointAt
     const breathe = Math.sin(time * 2.2);
 
     const turn = walking ? p.facing * 1.15 : pointing ? p.pointAt * 0.25 : 0;
-    root.current.rotation.y = spin + damp(root.current.rotation.y - spin, turn, 6, dt);
+    a.turn = damp(a.turn, turn, 6, dt);
+    // Spun by the visitor: coast with friction, then turn back to face the front.
+    const us = userSpin?.current;
+    if (us && !us.dragging) {
+      us.angle += us.vel * dt;
+      us.vel *= Math.exp(-2.5 * dt);
+      if (Math.abs(us.vel) < 0.4 && performance.now() - us.releasedAt > 1500) {
+        us.vel = 0;
+        us.angle = damp(us.angle, Math.round(us.angle / TAU) * TAU, 3, dt);
+      }
+    }
+    root.current.rotation.y = spin + a.turn + (us ? us.angle : 0);
     // Walk cycle: legs swing from the hip, a bounce on every step.
     const stride = walking ? Math.sin(time * 11) : 0;
     legs.current.forEach((l, i) => (l.rotation.x = damp(l.rotation.x, (i === 0 ? 1 : -1) * stride * 0.55, 20, dt)));
