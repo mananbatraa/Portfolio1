@@ -1,4 +1,5 @@
 import RevealText from "@/components/RevealText";
+import CountUp from "@/components/CountUp";
 import Section from "@/components/Section";
 import { research } from "@/lib/content";
 
@@ -12,7 +13,9 @@ export default function Research() {
         {research.stats.map((s) => (
           <div key={s.label} className="border-l border-accent/40 pl-4">
             <dt className="text-xs uppercase tracking-widest text-white/50">{s.label}</dt>
-            <dd className="font-display text-4xl text-accent md:text-6xl">{s.value}</dd>
+            <dd className="font-display text-4xl text-accent md:text-6xl">
+              <CountUp value={s.value} />
+            </dd>
           </div>
         ))}
       </dl>

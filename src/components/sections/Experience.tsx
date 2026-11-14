@@ -1,3 +1,4 @@
+import CountUp from "@/components/CountUp";
 import RevealText from "@/components/RevealText";
 import Section from "@/components/Section";
 import SheenCard from "@/components/SheenCard";
@@ -15,7 +16,7 @@ export default function Experience() {
             <p className="text-sm text-white/60">
               {job.role} · {job.place}
             </p>
-            <p className="mt-5 font-display text-4xl text-accent">{job.stat.value}</p>
+            <p className="mt-5 font-display text-4xl text-accent"><CountUp value={job.stat.value} /></p>
             <p className="text-xs uppercase tracking-widest text-white/50">{job.stat.label}</p>
             <ul className="mt-5 space-y-2 text-sm text-white/75">
               {job.points.map((p) => (
