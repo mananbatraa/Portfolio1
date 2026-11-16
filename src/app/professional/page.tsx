@@ -4,6 +4,7 @@ import Achievements from "@/components/professional/Achievements";
 import ProHero from "@/components/professional/ProHero";
 import SkillsEdu from "@/components/professional/SkillsEdu";
 import Timeline from "@/components/professional/Timeline";
+import UnderTheHood from "@/components/professional/UnderTheHood";
 import Work from "@/components/professional/Work";
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export default function ProfessionalPage() {
   return (
     <PageShell side="professional" accent="62 230 255" next={{ label: "MEET THE PERSON", href: "/personal", line: "The personal side" }}>
       <ProHero />
+      <UnderTheHood />
       <Achievements />
       <Timeline />
       <Work />
