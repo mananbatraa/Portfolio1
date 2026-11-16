@@ -22,9 +22,19 @@ export const TextRoll: React.FC<{
   className?: string;
   center?: boolean;
   inherit?: boolean;
-}> = ({ children, className, center = false, inherit = false }) => {
+  /** Paint the side gradient across a whole headline: this word's first letter index and the headline's letter count. */
+  gradient?: { start: number; total: number };
+}> = ({ children, className, center = false, inherit = false, gradient }) => {
   const reduce = useReducedMotion();
-  if (reduce) return <span className={className}>{children}</span>;
+  if (reduce) return <span className={cn(gradient && "text-side", className)}>{children}</span>;
+
+  // Each letter clips its own slice of one headline-wide gradient, so the colours
+  // run continuously across the words and survive the per-letter roll transforms.
+  const sliceOf = (i: number): React.CSSProperties | undefined =>
+    gradient && {
+      backgroundSize: `${gradient.total * 100}% 100%`,
+      backgroundPosition: `${gradient.total > 1 ? ((gradient.start + i) / (gradient.total - 1)) * 100 : 0}% 0`,
+    };
 
   const letters = children.split("");
   const delayFor = (i: number) => (center ? STAGGER * Math.abs(i - (letters.length - 1) / 2) : STAGGER * i);
@@ -38,7 +48,8 @@ export const TextRoll: React.FC<{
         {letters.map((l, i) => (
           <motion.span
             key={i}
-            className="inline-block whitespace-pre"
+            className={cn("inline-block whitespace-pre", gradient && "text-side")}
+            style={sliceOf(i)}
             variants={{ initial: rest, hidden: rest, show: rest, hovered: { y: "-100%" } }}
             transition={{ ease: "easeInOut", delay: delayFor(i) }}
           >
@@ -50,7 +61,8 @@ export const TextRoll: React.FC<{
         {letters.map((l, i) => (
           <motion.span
             key={i}
-            className="inline-block whitespace-pre"
+            className={cn("inline-block whitespace-pre", gradient && "text-side")}
+            style={sliceOf(i)}
             variants={{ initial: below, hidden: below, show: below, hovered: rest }}
             transition={{ ease: "easeInOut", delay: delayFor(i) }}
           >

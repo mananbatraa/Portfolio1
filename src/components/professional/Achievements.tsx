@@ -17,7 +17,7 @@ export default function Achievements() {
                 value={a.value}
                 decimals={a.decimals}
                 suffix={a.suffix}
-                className="mt-3 block font-display text-6xl text-accent md:text-7xl"
+                className="mt-3 block font-display text-6xl text-side md:text-7xl"
               />
               <p className="mt-2 text-white/75">{a.label}</p>
             </TiltCard>

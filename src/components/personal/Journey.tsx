@@ -30,12 +30,12 @@ export default function Journey() {
         <SectionHeading kicker="Where I've been" title="THE ROUTE SO FAR" className="mb-12 px-5 md:px-16" />
         <div className="relative">
           <div className="absolute left-0 right-0 top-[11px] h-px bg-white/10" />
-          <motion.div style={{ width: line }} className="absolute left-0 top-[11px] h-px bg-accent shadow-[0_0_12px_rgb(var(--accent))]" />
+          <motion.div style={{ width: line }} className="absolute left-0 top-[11px] h-px bg-side shadow-[0_0_12px_rgb(var(--accent))]" />
           <motion.div ref={track} style={{ x }} className="flex w-max gap-6 px-5 md:px-16">
             {journey.map((stop, i) => (
               <div key={stop.place} className="w-[78vw] max-w-sm shrink-0 sm:w-80">
                 <span className="relative z-10 mb-6 block h-6 w-6 rounded-full border-2 border-accent bg-ground">
-                  <span className="absolute inset-1 rounded-full bg-accent" />
+                  <span className="absolute inset-1 rounded-full bg-side" />
                 </span>
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-md">
                   <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent">{stop.year}</p>

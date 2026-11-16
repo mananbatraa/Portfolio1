@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import Link from "next/link";
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import MusicPlayer from "@/components/MusicPlayer";
 import CursorTrail from "@/components/CursorTrail";
 import Nav from "@/components/Nav";
@@ -10,8 +10,6 @@ import TourGuide from "@/components/mascot/TourGuide";
 import { profile } from "@/lib/content";
 
 type Props = {
-  // "R G B" triple that re-tints every accent on the page.
-  accent: string;
   // Which side this is: picks the wolf guide's outfit and tour.
   side: "personal" | "professional";
   next: { label: string; href: string; line: string };
@@ -20,18 +18,18 @@ type Props = {
 
 // Frame for the Personal and Professional pages: drifting glow in the page's own
 // colour, a scroll progress bar, the nav, and a hand-off to the other side.
-export default function PageShell({ accent, side, next, children }: Props) {
+export default function PageShell({ side, next, children }: Props) {
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
 
   return (
-    <div style={{ "--accent": accent } as CSSProperties} className="relative min-h-screen overflow-x-clip">
+    <div data-side={side} className="relative min-h-screen overflow-x-clip">
       <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
         {[
-          "left-[-10%] top-[-10%] h-[50vw] w-[50vw] bg-accent/20",
-          "right-[-15%] top-[30%] h-[45vw] w-[45vw] bg-fuchsia-500/10",
-          "bottom-[-20%] left-[20%] h-[40vw] w-[40vw] bg-accent/10",
+          "left-[-10%] top-[-10%] h-[50vw] w-[50vw] bg-grad-from/25",
+          "right-[-15%] top-[30%] h-[45vw] w-[45vw] bg-grad-via/15",
+          "bottom-[-20%] left-[20%] h-[40vw] w-[40vw] bg-grad-to/15",
         ].map((cls, i) => (
           <motion.div
             key={cls}
@@ -42,7 +40,7 @@ export default function PageShell({ accent, side, next, children }: Props) {
         ))}
         <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:28px_28px] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
       </div>
-      <motion.div aria-hidden style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-accent" />
+      <motion.div aria-hidden style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-side" />
       <Nav solid />
       <MusicPlayer />
       <TourGuide page={side} />

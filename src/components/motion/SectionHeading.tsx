@@ -5,7 +5,7 @@ export default function SectionHeading({ kicker, title, className }: { kicker: s
   return (
     <div className={className}>
       <p className="mb-4 font-mono text-xs uppercase tracking-[0.3em] text-accent">{kicker}</p>
-      <RevealText text={title} className="font-display text-5xl leading-[0.95] md:text-7xl" />
+      <RevealText text={title} gradient className="font-display text-5xl leading-[0.95] md:text-7xl" />
     </div>
   );
 }

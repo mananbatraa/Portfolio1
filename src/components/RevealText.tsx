@@ -6,15 +6,18 @@ import { useIntroDone } from "@/components/Intro";
 import { TextRoll } from "@/components/ui/text-roll";
 import { cn } from "@/lib/utils";
 
-type Props = { text: string; className?: string; as?: "h1" | "h2" | "p" };
+type Props = { text: string; className?: string; as?: "h1" | "h2" | "p"; gradient?: boolean };
 
 // Headlines rise word by word out of a mask, then roll letter by letter on hover.
-export default function RevealText({ text, className, as = "h2" }: Props) {
+export default function RevealText({ text, className, as = "h2", gradient = false }: Props) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.6 });
   const introDone = useIntroDone();
+  const words = text.split(" ");
+  const starts = words.map((_, i) => words.slice(0, i).join("").length);
+  const total = words.join("").length;
   return (
     <Tag
       className={cn("flex flex-wrap gap-x-[0.25em]", className)}
@@ -25,7 +28,7 @@ export default function RevealText({ text, className, as = "h2" }: Props) {
       transition={{ staggerChildren: 0.06 }}
       aria-label={text}
     >
-      {text.split(" ").map((word, i) => (
+      {words.map((word, i) => (
         <span key={i} className="overflow-hidden pb-[0.08em]" aria-hidden>
           <motion.span
             className="inline-block"
@@ -35,7 +38,7 @@ export default function RevealText({ text, className, as = "h2" }: Props) {
             }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <TextRoll inherit center>
+            <TextRoll inherit center gradient={gradient ? { start: starts[i], total } : undefined}>
               {word}
             </TextRoll>
           </motion.span>

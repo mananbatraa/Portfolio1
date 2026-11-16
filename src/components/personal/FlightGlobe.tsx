@@ -6,6 +6,7 @@ import { useState } from "react";
 import FadeIn from "@/components/motion/FadeIn";
 import SectionHeading from "@/components/motion/SectionHeading";
 import { flight } from "@/lib/personal";
+import { useSideColors } from "@/lib/use-side-colors";
 import { cn } from "@/lib/utils";
 
 // WebGL only runs in the browser, and the globe loads once the page is up.
@@ -14,7 +15,6 @@ const GlobeScene = dynamic(() => import("@/components/personal/GlobeScene"), {
   loading: () => <div className="absolute inset-0 m-auto aspect-square w-3/4 animate-pulse rounded-full bg-white/[0.04]" />,
 });
 
-const ACCENT = "#ff8060";
 
 // Great-circle distance in km.
 function km(a: { lat: number; lon: number }, b: { lat: number; lon: number }) {
@@ -29,6 +29,7 @@ const total = legs.reduce((a, b) => a + b, 0);
 // A spinning globe with a plane flying Faridabad → Vellore → Tempe. Click a stop to look at it.
 export default function FlightGlobe() {
   const calm = !!useReducedMotion();
+  const accent = useSideColors("personal").accent;
   const [focus, setFocus] = useState<number | null>(null);
   const [replay, setReplay] = useState(0);
   const [leg, setLeg] = useState(0);
@@ -83,7 +84,7 @@ export default function FlightGlobe() {
                 setFocus(null);
                 setReplay((r) => r + 1);
               }}
-              className="rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-ground transition hover:shadow-[0_0_24px_rgb(var(--accent)/0.6)]"
+              className="rounded-full bg-side px-5 py-2.5 text-sm font-semibold text-on-accent transition hover:shadow-[0_0_24px_rgb(var(--accent)/0.6)]"
             >
               {calm ? "Show the route" : "Replay the flight ✈"}
             </button>
@@ -91,7 +92,7 @@ export default function FlightGlobe() {
         </div>
 
         <FadeIn className="relative mx-auto aspect-square w-full max-w-[640px]">
-          <GlobeScene stops={flight} accent={ACCENT} focus={focus} replay={replay} calm={calm} onLeg={setLeg} />
+          <GlobeScene stops={flight} accent={accent} focus={focus} replay={replay} calm={calm} onLeg={setLeg} />
           <div className="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center">
           <AnimatePresence mode="wait">
             {focus === null && (flying || landed) && (

@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import Quest from "@/components/quest/Quest";
 import { navState } from "@/lib/nav-state";
+import { useSideColors } from "@/lib/use-side-colors";
 
 const FROM = "MANAN BATRA";
 const TO = "PORTFOLIO";
@@ -23,6 +24,7 @@ export const useIntroDone = () => useContext(IntroContext);
 // then a curtain lifts to reveal the page. The laptop frames buffer underneath.
 export default function Intro({ children }: { children: ReactNode }) {
   const [phase, setPhase] = useState<Phase>("name");
+  const accent = useSideColors("professional").accent;
   const [text, setText] = useState(FROM);
   // Read at first render, before any effect marks the app as mounted.
   const [arrivedInApp] = useState(() => navState.mounted);
@@ -108,7 +110,7 @@ export default function Intro({ children }: { children: ReactNode }) {
                 animate={{
                   y: "0%",
                   letterSpacing: phase === "word" || phase === "reveal" ? "0.08em" : "0em",
-                  color: phase === "name" ? "#ffffff" : "rgb(62 230 255)",
+                  color: phase === "name" ? "#ffffff" : accent,
                   scale: phase === "reveal" ? 0.9 : 1,
                 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}

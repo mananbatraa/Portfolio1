@@ -4,12 +4,12 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import WolfMascot from "@/components/mascot/WolfMascot";
 import { tours } from "@/lib/tour";
+import { useSideColors } from "@/lib/use-side-colors";
 
 type Page = keyof typeof tours;
 type Prefs = { hidden: boolean; muted: boolean };
 
 const PREFS_KEY = "mb-tour";
-const RIM: Record<Page, string> = { personal: "#ff8060", professional: "#3ee6ff" };
 
 function readPrefs(): Prefs {
   try {
@@ -34,6 +34,7 @@ function useTypewriter(text: string, instant: boolean) {
 // Wolf-Manan walks alongside the page as you scroll. At each section he crosses to his
 // spot, points at it and says a line in a speech bubble. He can be muted or sent away.
 export default function TourGuide({ page }: { page: Page }) {
+  const rim = useSideColors(page).accent;
   const stops = tours[page];
   const reduce = !!useReducedMotion();
   const [prefs, setPrefs] = useState<Prefs>({ hidden: false, muted: false });
@@ -153,7 +154,7 @@ export default function TourGuide({ page }: { page: Page }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 6, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 380, damping: 26 }}
-            className={`pointer-events-none absolute w-max max-w-[min(280px,70vw)] rounded-xl border-2 border-white/80 bg-ground/95 px-4 py-3 shadow-[0_0_0_3px_rgb(7_7_8),0_12px_40px_rgba(0,0,0,0.6)] ${
+            className={`pointer-events-none absolute w-max max-w-[min(280px,70vw)] rounded-xl border-2 border-white/80 bg-ground/95 px-4 py-3 shadow-[0_0_0_3px_rgb(var(--ground)),0_12px_40px_rgba(0,0,0,0.6)] ${
               side === "left" ? "left-[88%]" : "right-[88%]"
             }`}
             style={{ bottom: H * (mobile ? 0.7 : 0.42) }}
@@ -175,7 +176,7 @@ export default function TourGuide({ page }: { page: Page }) {
         <WolfMascot
           className="h-full w-full"
           outfit={page}
-          rim={RIM[page]}
+          rim={rim}
           action={action}
           talking={speaking && !done}
           pointAt={side === "left" ? 0.7 : -0.7}

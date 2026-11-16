@@ -3,9 +3,28 @@
 @tailwind utilities;
 
 :root {
-  /* Sampled from the laptop's screen glow. Re-sample once the real footage exists. */
-  --accent: 62 230 255;
-  --ground: 7 7 8;
+  /* Fallbacks only: the real values come from src/lib/palettes.ts, injected in layout.tsx. */
+  --accent: 6 182 212;
+  --grad-from: 6 182 212;
+  --grad-via: 59 130 246;
+  --grad-to: 99 102 241;
+  --on-accent: 255 255 255;
+  --ground: 11 15 26;
+}
+
+/* The side's three-stop gradient, as a fill or as text. */
+.bg-side {
+  background-image: linear-gradient(90deg, rgb(var(--grad-from)), rgb(var(--grad-via)), rgb(var(--grad-to)));
+}
+.bg-side-y {
+  background-image: linear-gradient(180deg, rgb(var(--grad-from)), rgb(var(--grad-via)), rgb(var(--grad-to)));
+}
+.text-side {
+  background-image: linear-gradient(90deg, rgb(var(--grad-from)), rgb(var(--grad-via)), rgb(var(--grad-to)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 html {

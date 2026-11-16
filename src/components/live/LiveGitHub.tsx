@@ -105,7 +105,7 @@ export default function LiveGitHub() {
             </span>
             Last push
           </p>
-          <p className="mt-3 font-display text-6xl tabular-nums text-accent md:text-7xl" suppressHydrationWarning>
+          <p className="mt-3 font-display text-6xl tabular-nums text-side md:text-7xl" suppressHydrationWarning>
             {lastPush && now ? ago(lastPush, now) : failed ? "—" : "…"}
           </p>
           <p className="mt-1 text-white/60">{lastPush ? "and counting" : failed ? "GitHub is taking a break" : "asking GitHub"}</p>

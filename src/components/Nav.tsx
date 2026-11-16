@@ -24,7 +24,7 @@ export default function Nav({ solid = false }: { solid?: boolean }) {
       <SideSwitch />
       <a
         href={`mailto:${profile.email}`}
-        className="hidden rounded-full bg-accent px-4 py-2 text-sm font-semibold text-ground transition hover:shadow-[0_0_24px_rgb(var(--accent)/0.6)] sm:block"
+        className="hidden rounded-full bg-side px-4 py-2 text-sm font-semibold text-on-accent transition hover:shadow-[0_0_24px_rgb(var(--accent)/0.6)] sm:block"
       >
         <TextRoll center>Hire me</TextRoll>
       </a>
