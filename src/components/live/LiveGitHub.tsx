@@ -96,8 +96,8 @@ export default function LiveGitHub() {
   return (
     <section id="live" className="px-5 py-24 md:px-16">
       <SectionHeading kicker="Live from GitHub" title="WHAT I'M SHIPPING" className="mb-12" />
-      <FadeIn className="grid gap-4 lg:grid-cols-5">
-        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-md md:p-8 lg:col-span-2">
+      <FadeIn className="grid grid-cols-1 gap-4 lg:grid-cols-5">
+        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-md md:p-8 lg:col-span-2 min-w-0">
           <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.25em] text-white/50">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -144,7 +144,7 @@ export default function LiveGitHub() {
           </dl>
         </div>
 
-        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-md md:p-8 lg:col-span-3">
+        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-md md:p-8 lg:col-span-3 min-w-0">
           <div className="flex items-center justify-between">
             <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/50">Recent activity</p>
             <a href={`https://github.com/${GITHUB_USER}`} target="_blank" rel="noreferrer" className="text-sm text-accent hover:underline">
