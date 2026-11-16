@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
+import LiveStatus from "@/components/live/LiveStatus";
 import RevealText from "@/components/RevealText";
 import FlipText from "@/components/ui/flip-text";
 import { experience, profile } from "@/lib/content";
@@ -18,10 +19,7 @@ export default function ProHero() {
   return (
     <section id="hello" className="flex min-h-screen flex-col-reverse items-start justify-center gap-12 px-5 pb-16 pt-28 md:flex-row md:items-center md:gap-16 md:px-16">
       <div className="md:w-3/5">
-        <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs text-accent">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />
-          Open to full-time roles · {profile.location}
-        </span>
+        <LiveStatus location={profile.location} />
         <RevealText as="h1" text={profile.name.toUpperCase()} className="font-display text-[16vw] leading-[0.88] md:text-[8vw]" />
         <FlipText duration={3} className="mt-4 font-display text-3xl tracking-wide text-accent md:text-5xl">
           {profile.role.toUpperCase()}

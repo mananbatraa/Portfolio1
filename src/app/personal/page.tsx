@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import LiveTempe from "@/components/live/LiveTempe";
 import PageShell from "@/components/PageShell";
 import FlightGlobe from "@/components/personal/FlightGlobe";
 import Interests from "@/components/personal/Interests";
@@ -17,6 +18,7 @@ export default function PersonalPage() {
     <PageShell side="personal" accent="255 128 96" next={{ label: "SEE THE WORK", href: "/professional", line: "The professional side" }}>
       <PersonalHero />
       <NowStrip />
+      <LiveTempe />
       <Interests />
       <FlightGlobe />
       <Journey />

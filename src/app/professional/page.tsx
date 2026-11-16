@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import LiveGitHub from "@/components/live/LiveGitHub";
 import PageShell from "@/components/PageShell";
 import Achievements from "@/components/professional/Achievements";
 import ProHero from "@/components/professional/ProHero";
@@ -18,6 +19,7 @@ export default function ProfessionalPage() {
       <Achievements />
       <Timeline />
       <Work />
+      <LiveGitHub />
       <SkillsEdu />
     </PageShell>
   );
