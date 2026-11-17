@@ -5,12 +5,13 @@ import FadeIn from "@/components/motion/FadeIn";
 import SectionHeading from "@/components/motion/SectionHeading";
 import TiltCard from "@/components/motion/TiltCard";
 import { certifications, education, skills } from "@/lib/content";
+import { headings } from "@/lib/copy";
 
 export default function SkillsEdu() {
   return (
     <>
       <section id="skills" className="px-5 py-24 md:px-16">
-        <SectionHeading kicker="Toolbox" title="SKILLS & STACK" className="mb-12" />
+        <SectionHeading {...headings.skills} className="mb-12" />
         <div className="grid gap-4 md:grid-cols-2">
           {skills.map((s, i) => (
             <FadeIn key={s.group} delay={(i % 2) * 0.08} className="h-full">
@@ -41,7 +42,7 @@ export default function SkillsEdu() {
       </section>
 
       <section id="education" className="px-5 py-24 md:px-16">
-        <SectionHeading kicker="Education" title="WHERE I STUDIED" className="mb-12" />
+        <SectionHeading {...headings.education} className="mb-12" />
         <div className="grid gap-4 md:grid-cols-2">
           {education.map((e, i) => (
             <FadeIn key={e.school} delay={i * 0.1} className="h-full">
@@ -62,7 +63,7 @@ export default function SkillsEdu() {
 
       {certifications.length > 0 && (
         <section id="certifications" className="px-5 py-24 md:px-16">
-          <SectionHeading kicker="Certifications & awards" title="CREDENTIALS" className="mb-12" />
+          <SectionHeading {...headings.certifications} className="mb-12" />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {certifications.map((c, i) => (
               <FadeIn key={c.name} delay={(i % 3) * 0.08} className="h-full">

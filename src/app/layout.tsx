@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { meta } from "@/lib/copy";
 import { DEFAULT_PALETTE, paletteBootScript, paletteCss } from "@/lib/palettes";
 
 const geistSans = localFont({
@@ -15,8 +16,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Manan Batra · AI Software Engineer",
-  description: "Portfolio of Manan Batra, AI software engineer and MS CS student at Arizona State University.",
+  title: meta.site.title,
+  description: meta.site.description,
 };
 
 export default function RootLayout({

@@ -1,24 +1,25 @@
-// What wolf-Manan says at each stop of the tour. `id` is the section's element id, and
+// What the wolf says at each stop of the tour. He's Manan's assistant, so he talks
+// about Manan in the third person. `id` is the section's element id, and
 // `side` is where he stands while talking about it (he walks across when it changes).
 export type TourStop = { id: string; line: string; side: "left" | "right" };
 
 export const tours: Record<"personal" | "professional", TourStop[]> = {
   personal: [
-    { id: "hello", line: "Hey, I'm Manan. Well, the wolf version. Scroll and I'll show you around.", side: "left" },
-    { id: "now", line: "Quick snapshot of what I'm up to right now.", side: "right" },
-    { id: "interests", line: "The stuff I'm into when the laptop's closed.", side: "left" },
-    { id: "flight", line: "Every place I've flown to, traced on the globe.", side: "right" },
-    { id: "journey", line: "How I got from India to Tempe. Keep scrolling, this bit moves sideways.", side: "left" },
-    { id: "memories", line: "My people. These are the moments I keep coming back to.", side: "right" },
-    { id: "next", line: "That's me off the clock. Want to see the work side? I'll suit up.", side: "left" },
+    { id: "hello", line: "Wolfie here, Manan's assistant. He's out, so I'm giving the tour. Scroll and follow me.", side: "left" },
+    { id: "now", line: "What he's up to these days. The short version.", side: "right" },
+    { id: "interests", line: "What Manan does when the laptop's closed. Which isn't often.", side: "left" },
+    { id: "flight", line: "Two flights got him from Faridabad to Tempe. Hit replay, the plane enjoys it.", side: "right" },
+    { id: "journey", line: "Five cities so far. This bit scrolls sideways, keep going.", side: "left" },
+    { id: "memories", line: "His friends. I'd say more, but they'll read this.", side: "right" },
+    { id: "next", line: "That's Manan off duty. Want the work side? I'll go find a tie.", side: "left" },
   ],
   professional: [
-    { id: "hello", line: "Suit's on. This is the work side. Scroll and I'll walk you through it.", side: "left" },
-    { id: "achievements", line: "Highlights first: the numbers I'm proudest of.", side: "right" },
-    { id: "experience", line: "Where I've worked, newest first.", side: "left" },
-    { id: "projects", line: "Things I've built. Tilt the cards, they react.", side: "right" },
-    { id: "skills", line: "My toolkit, from models to infra.", side: "left" },
-    { id: "education", line: "Where I studied.", side: "right" },
-    { id: "next", line: "Want to meet the person behind the work? I'll grab my hoodie.", side: "left" },
+    { id: "hello", line: "Wolfie again, suit on. This is Manan's work side, and I'll walk you through it.", side: "left" },
+    { id: "achievements", line: "Numbers first. I hear recruiters like numbers.", side: "right" },
+    { id: "experience", line: "Three internships, newest at the top.", side: "left" },
+    { id: "projects", line: "Things he's built. Hover a card, it tilts. He spent too long on that.", side: "right" },
+    { id: "skills", line: "His toolkit. Languages first, then the ML and backend stuff.", side: "left" },
+    { id: "education", line: "Where he studied. Short section, I promise.", side: "right" },
+    { id: "next", line: "That's the work. Want to see who he is off the clock? I'll grab my hoodie.", side: "left" },
   ],
 };
