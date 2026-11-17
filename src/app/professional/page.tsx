@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function ProfessionalPage() {
   return (
-    <PageShell side="professional" accent="62 230 255" next={{ label: "MEET THE PERSON", href: "/personal", line: "The personal side" }}>
+    <PageShell side="professional" next={{ label: "MEET THE PERSON", href: "/personal", line: "The personal side" }}>
       <ProHero />
       <Achievements />
       <Timeline />

@@ -15,7 +15,7 @@ export default function PersonalHero() {
     <section ref={bounds} id="hello" className="relative flex min-h-screen flex-col justify-center gap-12 px-5 pb-16 pt-28 md:flex-row md:items-center md:px-16">
       <div className="md:w-3/5">
         <p className="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-accent">{hints.personalKicker}</p>
-        <RevealText as="h1" text={about.hello.toUpperCase()} className="font-display text-[16vw] leading-[0.88] md:text-[8.5vw]" />
+        <RevealText as="h1" gradient text={about.hello.toUpperCase()} className="font-display text-[16vw] leading-[0.88] md:text-[8.5vw]" />
         <motion.p
           className="mt-8 max-w-xl text-lg text-white/75 md:text-xl"
           initial={{ opacity: 0, y: 20 }}
@@ -55,7 +55,7 @@ export default function PersonalHero() {
           transition={{ delay: 0.3, type: "spring", stiffness: 90, damping: 14 }}
           className="relative w-64 cursor-grab touch-none rounded-sm bg-[#f4f1ea] p-3 pb-14 shadow-2xl shadow-black/60 md:w-80"
         >
-          <div className="relative aspect-[4/5] overflow-hidden bg-gradient-to-br from-accent/80 via-fuchsia-500/60 to-indigo-600/70">
+          <div className="relative aspect-[4/5] overflow-hidden bg-gradient-to-br from-grad-from/80 via-grad-via/60 to-grad-to/70">
             {about.photo ? (
               <Image src={about.photo} alt="Manan" fill sizes="320px" className="object-cover" draggable={false} />
             ) : (

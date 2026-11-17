@@ -211,7 +211,7 @@ export default function Quest({ onClose }: { onClose: () => void }) {
         <span className="absolute -top-4 left-6 z-10 rounded-md border-2 border-accent bg-ground px-3 py-0.5 font-mono text-xs font-bold uppercase tracking-[0.25em] text-accent">
           {wolf.name}
         </span>
-        <div className="relative rounded-xl border-2 border-white/80 bg-ground/95 p-6 pt-7 shadow-[0_0_0_4px_rgb(7_7_8),0_0_0_6px_rgba(255,255,255,0.25),0_20px_60px_rgba(0,0,0,0.6)] md:p-8 md:pt-9">
+        <div className="relative rounded-xl border-2 border-white/80 bg-ground/95 p-6 pt-7 shadow-[0_0_0_4px_rgb(var(--ground)),0_0_0_6px_rgba(255,255,255,0.25),0_20px_60px_rgba(0,0,0,0.6)] md:p-8 md:pt-9">
           <p className="min-h-[3.5em] font-mono text-base leading-relaxed text-white md:text-xl" aria-live="polite">
             {shown}
             {!done && <span className="ml-0.5 inline-block h-[1em] w-2 translate-y-[0.15em] animate-pulse bg-accent" />}
@@ -245,7 +245,7 @@ export default function Quest({ onClose }: { onClose: () => void }) {
                       <span className="mt-1 block pl-5 text-sm text-white/60">{c.hint}</span>
                       <span className="absolute right-3 top-3 font-mono text-[10px] text-white/30">{c.key}</span>
                       {last === c.id && (
-                        <span className="absolute -top-2.5 right-6 rounded bg-accent px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase text-ground">
+                        <span className="absolute -top-2.5 right-6 rounded bg-side px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase text-on-accent">
                           last pick
                         </span>
                       )}

@@ -19,7 +19,7 @@ export default function Timeline() {
       <SectionHeading {...headings.experience} className="mb-14" />
       <div ref={ref} className="relative ml-2 md:ml-[calc(25%-1px)]">
         <div className="absolute bottom-0 left-0 top-0 w-px bg-white/10" />
-        <motion.div style={{ scaleY: fill }} className="absolute bottom-0 left-0 top-0 w-px origin-top bg-accent shadow-[0_0_10px_rgb(var(--accent))]" />
+        <motion.div style={{ scaleY: fill }} className="absolute bottom-0 left-0 top-0 w-px origin-top bg-side-y shadow-[0_0_10px_rgb(var(--accent))]" />
         <ol className="space-y-12">
           {experience.map((job) => (
             <li key={job.company} className="relative pl-8 md:pl-12">
@@ -37,7 +37,7 @@ export default function Timeline() {
                       </p>
                     </div>
                     <div className="rounded-xl border border-accent/30 bg-accent/10 px-4 py-2 text-right">
-                      <p className="font-display text-3xl text-accent">{job.stat.value}</p>
+                      <p className="font-display text-3xl text-side">{job.stat.value}</p>
                       <p className="text-[11px] uppercase tracking-widest text-white/60">{job.stat.label}</p>
                     </div>
                   </div>

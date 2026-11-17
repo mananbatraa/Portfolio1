@@ -20,7 +20,7 @@ export default function ProHero() {
     <section id="hello" className="flex min-h-screen flex-col-reverse items-start justify-center gap-12 px-5 pb-16 pt-28 md:flex-row md:items-center md:gap-16 md:px-16">
       <div className="md:w-3/5">
         <LiveStatus location={profile.location} />
-        <RevealText as="h1" text={profile.name.toUpperCase()} className="font-display text-[16vw] leading-[0.88] md:text-[8vw]" />
+        <RevealText as="h1" gradient text={profile.name.toUpperCase()} className="font-display text-[16vw] leading-[0.88] md:text-[8vw]" />
         <FlipText duration={3} className="mt-4 font-display text-3xl tracking-wide text-accent md:text-5xl">
           {profile.role.toUpperCase()}
         </FlipText>
@@ -46,7 +46,7 @@ export default function ProHero() {
               rel="noreferrer"
               className={
                 primary
-                  ? "rounded-full bg-accent px-6 py-3 text-sm font-semibold text-ground transition hover:shadow-[0_0_32px_rgb(var(--accent)/0.6)]"
+                  ? "rounded-full bg-side px-6 py-3 text-sm font-semibold text-on-accent transition hover:shadow-[0_0_32px_rgb(var(--accent)/0.6)]"
                   : "rounded-full border border-white/15 px-6 py-3 text-sm text-white/85 transition hover:border-accent hover:text-accent"
               }
             >
@@ -68,7 +68,7 @@ export default function ProHero() {
       >
         <motion.div
           aria-hidden
-          className="absolute -inset-2 rounded-full bg-[conic-gradient(from_0deg,rgb(var(--accent)),transparent_30%,rgb(var(--accent)/0.4)_60%,transparent_80%,rgb(var(--accent)))]"
+          className="absolute -inset-2 rounded-full bg-[conic-gradient(from_0deg,rgb(var(--grad-from)),transparent_30%,rgb(var(--grad-via)/0.6)_60%,rgb(var(--grad-to))_80%,rgb(var(--grad-from)))]"
           animate={reduce ? undefined : { rotate: 360 }}
           transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
         />

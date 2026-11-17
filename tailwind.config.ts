@@ -7,6 +7,10 @@ const config: Config = {
       colors: {
         ground: "rgb(var(--ground) / <alpha-value>)",
         accent: "rgb(var(--accent) / <alpha-value>)",
+        "on-accent": "rgb(var(--on-accent) / <alpha-value>)",
+        "grad-from": "rgb(var(--grad-from) / <alpha-value>)",
+        "grad-via": "rgb(var(--grad-via) / <alpha-value>)",
+        "grad-to": "rgb(var(--grad-to) / <alpha-value>)",
       },
       fontFamily: {
         display: ["Anton", "Impact", "Arial Narrow", "sans-serif"],

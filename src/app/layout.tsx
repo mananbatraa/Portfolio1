@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { meta } from "@/lib/copy";
+import { DEFAULT_PALETTE, paletteBootScript, paletteCss } from "@/lib/palettes";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,8 +26,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-palette={DEFAULT_PALETTE} suppressHydrationWarning>
       <head>
+        <style dangerouslySetInnerHTML={{ __html: paletteCss() }} />
+        <script dangerouslySetInnerHTML={{ __html: paletteBootScript }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}

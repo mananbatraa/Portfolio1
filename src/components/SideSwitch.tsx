@@ -25,13 +25,13 @@ export default function SideSwitch({ className }: { className?: string }) {
             aria-current={active ? "page" : undefined}
             className={cn(
               "relative rounded-full px-3 py-1.5 text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent sm:px-4",
-              active ? "text-ground" : "text-white/70 hover:text-white",
+              active ? "text-on-accent" : "text-white/70 hover:text-white",
             )}
           >
             {active && (
               <motion.span
                 layoutId="side-pill"
-                className="absolute inset-0 rounded-full bg-accent shadow-[0_0_24px_rgb(var(--accent)/0.5)]"
+                className="absolute inset-0 rounded-full bg-side shadow-[0_0_24px_rgb(var(--accent)/0.5)]"
                 transition={{ type: "spring", stiffness: 380, damping: 32 }}
               />
             )}
