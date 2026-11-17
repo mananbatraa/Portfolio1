@@ -6,18 +6,21 @@ import SectionHeading from "@/components/motion/SectionHeading";
 import TiltCard from "@/components/motion/TiltCard";
 import { interests } from "@/lib/personal";
 import { cn } from "@/lib/utils";
+import { headings } from "@/lib/copy";
 
 // Bento layout: the first card is big, the rest fill in around it.
+// The first card is big. With four cards the last one goes wide so the grid has no hole.
 const spans = ["md:col-span-2 md:row-span-2"];
+const lastSpan = interests.length % 2 === 0 ? "md:col-span-2" : "";
 
 export default function Interests() {
   const reduce = useReducedMotion();
   return (
     <section id="interests" className="px-5 py-28 md:px-16">
-      <SectionHeading kicker="What I'm into" title="OFF THE CLOCK" className="mb-12" />
+      <SectionHeading {...headings.interests} className="mb-12" />
       <div className="grid auto-rows-[minmax(200px,auto)] gap-4 md:grid-flow-dense md:grid-cols-4">
         {interests.map((item, i) => (
-          <FadeIn key={item.title} delay={(i % 4) * 0.08} className={cn("h-full", spans[i] ?? "")}>
+          <FadeIn key={item.title} delay={(i % 4) * 0.08} className={cn("h-full", spans[i] ?? (i === interests.length - 1 ? lastSpan : ""))}>
             <TiltCard className="h-full p-6 md:p-8">
               <div className={cn("pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-gradient-to-br blur-2xl", item.tint)} />
               <div className="relative flex h-full flex-col justify-between gap-8">

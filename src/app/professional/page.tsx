@@ -5,10 +5,11 @@ import ProHero from "@/components/professional/ProHero";
 import SkillsEdu from "@/components/professional/SkillsEdu";
 import Timeline from "@/components/professional/Timeline";
 import Work from "@/components/professional/Work";
+import { meta } from "@/lib/copy";
 
 export const metadata: Metadata = {
-  title: "Manan Batra · Professional",
-  description: "Experience, achievements, projects, skills and education of Manan Batra, AI software engineer.",
+  title: meta.professional.title,
+  description: meta.professional.description,
 };
 
 export default function ProfessionalPage() {

@@ -4,11 +4,11 @@
 
 export const about = {
   hello: "Hi, I'm Manan.",
-  // CONFIRM: a first-person intro in your own voice.
-  bio: "I grew up in India, studied in Vellore, and now live in Tempe while I do my master's at ASU. Away from the keyboard I'm chasing a good song, a new city or a late-night conversation with friends.",
+  // CONFIRM: only facts we know. Add one real thing about you to the last sentence.
+  bio: "I'm from Faridabad, did my bachelor's at VIT in Vellore, and moved to Tempe in 2025 for my master's at ASU. If I'm not coding, Tame Impala is probably on.",
   // A casual photo of you (not the LinkedIn one). Put it in public/personal/ and set the path.
   photo: "",
-  tags: ["From India", "Lives in Tempe, AZ", "MS CS @ ASU", "Night owl"], // CONFIRM "Night owl"
+  tags: ["From Faridabad", "Lives in Tempe, AZ", "MS CS at ASU", "Night owl"], // CONFIRM "Night owl"
 };
 
 export type Interest = {
@@ -23,51 +23,47 @@ export const interests: Interest[] = [
   {
     emoji: "🎧",
     title: "Music",
-    blurb: "Tame Impala on repeat. Psychedelic synths, long drives and playlists that fit the mood exactly.",
+    blurb: "Mostly Tame Impala. 'Loser' has been on repeat for a while now.",
     tint: "from-fuchsia-500/30 to-violet-500/10",
   },
   {
     emoji: "✈️",
     title: "New cities",
-    blurb: "Delhi, Vellore, Tempe, Goleta. Every move so far has come with a new favourite street and food spot.",
+    blurb: "Faridabad, Vellore, Delhi, Tempe, Goleta. Five cities so far, and I'm not done.",
     tint: "from-sky-500/30 to-cyan-500/10",
   },
   {
     emoji: "🎨",
-    title: "Design & motion",
-    blurb: "I care how things feel: smooth transitions, good type, and interfaces that make you want to scroll.",
+    title: "Making things move",
+    blurb: "I spend too long on how things animate. This site is the evidence.",
     tint: "from-amber-500/30 to-orange-500/10",
   },
   {
     emoji: "🛠️",
     title: "Building for fun",
-    blurb: "Weekend side projects with AI agents, mostly to find out whether an idea actually works.",
+    blurb: "Side projects with AI agents, mostly to see if an idea holds up outside my head.",
     tint: "from-emerald-500/30 to-teal-500/10",
   },
-  // CONFIRM: add the ones only you know, e.g. a sport, games, cooking, photography.
-  {
-    emoji: "☕",
-    title: "Coffee & long talks",
-    blurb: "Best ideas come out of a coffee run with friends that turns into three hours.",
-    tint: "from-rose-500/30 to-pink-500/10",
-  },
+  // CONFIRM: the old "Coffee & long talks" card was made up, so it's off for now.
+  // Add the ones only you know (a sport, games, cooking, photography) in the same shape,
+  // e.g. { emoji: "⚽", title: "...", blurb: "...", tint: "from-rose-500/30 to-pink-500/10" }.
 ];
 
 // Small facts shown as flip-free stat tiles.
 export const nowFacts = [
-  { label: "Currently", value: "MS CS at Arizona State" },
+  { label: "Doing", value: "MS CS at Arizona State" },
   { label: "On repeat", value: "Loser · Tame Impala" },
-  { label: "Based in", value: "Tempe, Arizona" },
-  { label: "Learning", value: "Agentic AI systems" }, // CONFIRM
+  { label: "Living in", value: "Tempe, Arizona" },
+  { label: "Building", value: "AI agents" },
 ];
 
 // The places that shaped me, shown as a horizontal journey.
 export const journey = [
-  { year: "Before 2021", place: "Faridabad", note: "Home. Family, friends and the first lines of code." },
-  { year: "2021 – 2025", place: "Vellore", note: "Four years at VIT, the friends I still call first." },
-  { year: "Early 2025", place: "Delhi", note: "Built parking routing for Kumbh Mela crowds at Buntikki." },
-  { year: "2025 →", place: "Tempe", note: "Moved across the world for an MS at Arizona State." },
-  { year: "Summer 2026", place: "Goleta", note: "Interned at ParentSquare on the California coast." },
+  { year: "Before 2021", place: "Faridabad", note: "Where I'm from." },
+  { year: "2021 – 2025", place: "Vellore", note: "Four years of CS at VIT." },
+  { year: "Early 2025", place: "Delhi", note: "Interned at Buntikki, routing cars for Kumbh Mela crowds." },
+  { year: "2025 →", place: "Tempe", note: "Moved here for my master's at ASU." },
+  { year: "Summer 2026", place: "Goleta", note: "Spent the summer interning at ParentSquare." },
 ];
 
 export type Memory = {
@@ -79,10 +75,11 @@ export type Memory = {
 };
 
 // Photos with friends. Drop the files into public/memories/ and fill in src.
+// CONFIRM: these captions are placeholders until the real photos are in.
 // Add or remove entries; the wall lays out any number.
 export const memories: Memory[] = [
   { src: "", caption: "The VIT crew", place: "Vellore", date: "2024" },
-  { src: "", caption: "Road trip", place: "Somewhere good", date: "" },
+  { src: "", caption: "Road trip", place: "", date: "" },
   { src: "", caption: "First week in Tempe", place: "Tempe", date: "2025" },
   { src: "", caption: "Late-night food run", place: "", date: "" },
   { src: "", caption: "Hackathon all-nighter", place: "", date: "" },
@@ -91,7 +88,7 @@ export const memories: Memory[] = [
 
 // The flight on the Personal page globe, in order. Coordinates are city centres.
 export const flight = [
-  { city: "Faridabad", lat: 28.41, lon: 77.32, years: "Home", note: "Where it all started." },
+  { city: "Faridabad", lat: 28.41, lon: 77.32, years: "Home", note: "Where I'm from." },
   { city: "Vellore", lat: 12.92, lon: 79.13, years: "2021 – 2025", note: "BTech at VIT." },
-  { city: "Tempe", lat: 33.43, lon: -111.94, years: "2025 →", note: "MS CS at Arizona State." },
+  { city: "Tempe", lat: 33.43, lon: -111.94, years: "2025 →", note: "MS CS at ASU." },
 ];

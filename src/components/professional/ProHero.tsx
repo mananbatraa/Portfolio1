@@ -5,6 +5,7 @@ import Image from "next/image";
 import RevealText from "@/components/RevealText";
 import FlipText from "@/components/ui/flip-text";
 import { experience, profile } from "@/lib/content";
+import { hints } from "@/lib/copy";
 
 export default function ProHero() {
   const reduce = useReducedMotion();
@@ -20,7 +21,7 @@ export default function ProHero() {
       <div className="md:w-3/5">
         <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs text-accent">
           <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />
-          Open to full-time roles · {profile.location}
+          {hints.openToWork} · {profile.location}
         </span>
         <RevealText as="h1" text={profile.name.toUpperCase()} className="font-display text-[16vw] leading-[0.88] md:text-[8vw]" />
         <FlipText duration={3} className="mt-4 font-display text-3xl tracking-wide text-accent md:text-5xl">
