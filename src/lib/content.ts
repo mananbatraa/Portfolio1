@@ -148,7 +148,7 @@ export const projects: Project[] = [
     stack: ["React", "TypeScript", "TanStack Start", "Supabase", "Groq"],
     summary:
       "A teacher says an instruction out loud and autistic and ADHD students get it as picture step cards, live. The teacher approves each card first, and the help fades as a routine sticks. Work mode does the same for neurodivergent adults with instructions from their manager.",
-    href: "https://github.com/dgupta98/NueroChallange",
+    href: "https://github.com/mananbatraa/NueroChallange",
     demo: "https://nuero-challange.vercel.app",
     wide: true,
   },
