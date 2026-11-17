@@ -5,6 +5,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import Wolf from "@/components/mascot/Wolf";
+import { tempeClock, tempeMood, tempeParts, useNow } from "@/lib/live";
 import { LAND_DOTS } from "@/lib/land-dots";
 import { globe as globeCopy } from "@/lib/copy";
 
@@ -166,6 +167,12 @@ function World({ stops, accent, focus, replay, calm, onLeg }: Props) {
   const bubble = useRef<HTMLDivElement>(null);
   const wolfAction = useRef<"idle" | "wave">("idle");
   const [action, setAction] = useState<"idle" | "wave">("idle");
+  // The wolf keeps Tempe hours: awake and waving by day, curled up asleep at night.
+  const now = useNow(30_000);
+  const mood = now ? tempeMood(tempeParts(now).hour) : "working";
+  const asleep = mood === "asleep";
+  const awake = useRef(true);
+  awake.current = !asleep;
   const tmp = useMemo(
     () => ({
       v: new THREE.Vector3(),
@@ -283,8 +290,9 @@ function World({ stops, accent, focus, replay, calm, onLeg }: Props) {
     // Hide the bubble when Tempe turns to the far side, since HTML is not occluded by the planet.
     const homeFacing = upW.dot(tmp.side.copy(state.camera.position).normalize());
     if (bubble.current) bubble.current.style.opacity = pop >= 1 && homeFacing > 0.15 ? "1" : "0";
-    if (wolfAction.current !== (pop > 0 && sinceLanding < 4 ? "wave" : "idle")) {
-      wolfAction.current = pop > 0 && sinceLanding < 4 ? "wave" : "idle";
+    const wants = pop > 0 && sinceLanding < 4 && awake.current ? "wave" : "idle";
+    if (wolfAction.current !== wants) {
+      wolfAction.current = wants;
       setAction(wolfAction.current);
     }
 
@@ -338,16 +346,28 @@ function World({ stops, accent, focus, replay, calm, onLeg }: Props) {
         <Plane color={accent} />
       </group>
       <group ref={wolf} visible={false}>
-        <Wolf outfit="personal" action={action} accent={accent} calm={calm} />
+        <Wolf outfit="personal" action={action} accent={accent} calm={calm} sleeping={asleep} />
         <Html position={[0, 3.6, 0]} center zIndexRange={[30, 0]} style={{ pointerEvents: "none" }}>
           <div
             ref={bubble}
             className="relative whitespace-nowrap rounded-xl border border-white/15 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-900 opacity-0 shadow-lg transition-opacity duration-500"
           >
-            {globeCopy.bubble}
+            {asleep ? "💤 Asleep in Tempe" : mood === "late" ? "🦉 Still up in Tempe" : `📍 ${globeCopy.bubble}`}
+            {now && <span className="ml-1.5 font-mono font-normal text-neutral-500">{tempeClock(now)}</span>}
             <span className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-white" />
           </div>
         </Html>
+        {asleep && !calm && (
+          <Html position={[0.9, 2.6, 0]} center zIndexRange={[30, 0]} style={{ pointerEvents: "none" }}>
+            <div className="relative h-10 w-10 font-display text-white/90">
+              {[0, 1, 2].map((i) => (
+                <span key={i} className="absolute bottom-0 left-0 animate-[zzz_3s_ease-out_infinite]" style={{ animationDelay: `${i}s`, fontSize: 10 + i * 4 }}>
+                  z
+                </span>
+              ))}
+            </div>
+          </Html>
+        )}
       </group>
     </group>
   );

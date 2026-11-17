@@ -22,6 +22,8 @@ export type WolfProps = {
   facing?: number;
   /** Colour of the dot in the "MB." print. */
   accent?: string;
+  /** Eyes shut and head nodded down, breathing slowly. */
+  sleeping?: boolean;
   /** Turns off the bobbing, wagging and spin for visitors who prefer reduced motion. */
   calm?: boolean;
   /** Drag-to-spin state written by the stage; the wolf turns by `angle` on top of his own moves. */
@@ -387,15 +389,15 @@ function Arm({ side, t, g, refs }: { side: 1 | -1; t: Toon; g: ReturnType<typeof
 
 /* ---------- the wolf ---------- */
 
-export default function Wolf({ outfit, action = "idle", talking = false, pointAt = 0, facing = 1, accent = "#ff8060", calm = false, userSpin }: WolfProps) {
+export default function Wolf({ outfit, action = "idle", talking = false, pointAt = 0, facing = 1, accent = "#ff8060", calm = false, sleeping = false, userSpin }: WolfProps) {
   const t = useToon();
   const g = useGeometry();
   const headTex = useHeadTexture();
   const logo = useLogoTexture(accent);
   const suit = useSuitTexture();
 
-  const props = useRef({ outfit, action, talking, pointAt, facing, calm });
-  props.current = { outfit, action, talking, pointAt, facing, calm };
+  const props = useRef({ outfit, action, talking, pointAt, facing, calm, sleeping });
+  props.current = { outfit, action, talking, pointAt, facing, calm, sleeping };
   const legs = useRef<THREE.Group[]>([]);
 
   const root = useRef<THREE.Group>(null);
@@ -458,7 +460,7 @@ export default function Wolf({ outfit, action = "idle", talking = false, pointAt
     const walking = p.action === "walk";
     const waving = p.action === "wave";
     const live = p.calm ? 0 : 1;
-    const breathe = Math.sin(time * 2.2);
+    const breathe = Math.sin(time * (p.sleeping ? 1.1 : 2.2)) * (p.sleeping ? 1.8 : 1);
 
     const turn = walking ? p.facing * 1.15 : pointing ? p.pointAt * 0.25 : 0;
     a.turn = damp(a.turn, turn, 6, dt);
@@ -481,8 +483,8 @@ export default function Wolf({ outfit, action = "idle", talking = false, pointAt
 
     // Head: follow the cursor, nod while talking, look where it points.
     const h = head.current!;
-    const lookY = pointing ? p.pointAt * 0.35 : a.look.x * 0.5;
-    const lookX = pointing ? 0.22 : a.look.y * 0.2 + (p.talking ? Math.sin(time * 7) * 0.04 * live : 0);
+    const lookY = p.sleeping ? 0 : pointing ? p.pointAt * 0.35 : a.look.x * 0.5;
+    const lookX = p.sleeping ? 0.38 : pointing ? 0.22 : a.look.y * 0.2 + (p.talking ? Math.sin(time * 7) * 0.04 * live : 0);
     h.rotation.y = damp(h.rotation.y, lookY, 5, dt);
     h.rotation.x = damp(h.rotation.x, lookX, 5, dt);
     h.rotation.z = damp(h.rotation.z, live * Math.sin(time * 1.3) * 0.05 + (waving ? 0.12 : 0), 3, dt);
@@ -492,7 +494,7 @@ export default function Wolf({ outfit, action = "idle", talking = false, pointAt
 
     // Blink every few seconds; brows lift while talking or waving.
     const blink = time % 3.8;
-    const shut = blink < 0.16 ? Math.sin((blink / 0.16) * Math.PI) : 0;
+    const shut = p.sleeping ? 1 : blink < 0.16 ? Math.sin((blink / 0.16) * Math.PI) : 0;
     lids.current.forEach((l) => (l.position.y = 0.065 - shut * 0.06));
     const lift = (p.talking ? 0.012 + Math.sin(time * 5) * 0.008 * live : 0) + (waving ? 0.02 : 0);
     brows.current.forEach((b) => (b.position.y = damp(b.position.y, 0.15 + lift, 10, dt)));
