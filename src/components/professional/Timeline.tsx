@@ -6,6 +6,7 @@ import FadeIn from "@/components/motion/FadeIn";
 import SectionHeading from "@/components/motion/SectionHeading";
 import TiltCard from "@/components/motion/TiltCard";
 import { experience } from "@/lib/content";
+import { headings } from "@/lib/copy";
 
 // Experience on a vertical line that fills in as you scroll past each role.
 export default function Timeline() {
@@ -15,7 +16,7 @@ export default function Timeline() {
 
   return (
     <section id="experience" className="px-5 py-24 md:px-16">
-      <SectionHeading kicker="Experience" title="WHERE I'VE WORKED" className="mb-14" />
+      <SectionHeading {...headings.experience} className="mb-14" />
       <div ref={ref} className="relative ml-2 md:ml-[calc(25%-1px)]">
         <div className="absolute bottom-0 left-0 top-0 w-px bg-white/10" />
         <motion.div style={{ scaleY: fill }} className="absolute bottom-0 left-0 top-0 w-px origin-top bg-accent shadow-[0_0_10px_rgb(var(--accent))]" />

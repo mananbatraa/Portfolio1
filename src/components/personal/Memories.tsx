@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/motion/SectionHeading";
 import { memories, type Memory } from "@/lib/personal";
+import { headings, hints } from "@/lib/copy";
 
 const TINTS = [
   "from-rose-400/70 to-orange-300/60",
@@ -27,7 +28,7 @@ function Photo({ m, i, sizes }: { m: Memory; i: number; sizes: string }) {
           <span className="text-4xl" aria-hidden>
             📸
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em]">Photo coming soon</span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.25em]">{hints.photoSoon}</span>
         </div>
       )}
     </div>
@@ -57,12 +58,12 @@ export default function Memories() {
   return (
     <section id="memories" className="px-5 py-28 md:px-16">
       <div className="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-        <SectionHeading kicker="Friends & memories" title="MY PEOPLE" />
+        <SectionHeading {...headings.memories} />
         <button
           onClick={() => setAngles(memories.map(tilt))}
           className="self-start rounded-full border border-white/15 px-5 py-2 text-sm text-white/80 transition hover:border-accent hover:text-accent md:self-auto"
         >
-          Shuffle the wall ↻
+          {hints.shuffleWall}
         </button>
       </div>
 

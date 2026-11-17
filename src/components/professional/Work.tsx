@@ -4,11 +4,12 @@ import SectionHeading from "@/components/motion/SectionHeading";
 import TiltCard from "@/components/motion/TiltCard";
 import { projects, research } from "@/lib/content";
 import { cn } from "@/lib/utils";
+import { headings, hints } from "@/lib/copy";
 
 export default function Work() {
   return (
     <section id="projects" className="px-5 py-24 md:px-16">
-      <SectionHeading kicker="Projects & research" title="THINGS I'VE BUILT" className="mb-12" />
+      <SectionHeading {...headings.work} className="mb-12" />
       <div className="grid gap-4 md:grid-cols-6">
         {projects.map((p, i) => (
           <FadeIn key={p.name} delay={(i % 3) * 0.08} className={cn("h-full", i < 2 ? "md:col-span-3" : "md:col-span-2")}>
@@ -26,7 +27,7 @@ export default function Work() {
                 </ul>
                 {p.href && (
                   <a href={p.href} target="_blank" rel="noreferrer" className="mt-5 inline-block text-sm text-white underline-offset-4 hover:text-accent hover:underline">
-                    View on GitHub →
+                    {hints.viewCode}
                   </a>
                 )}
               </div>

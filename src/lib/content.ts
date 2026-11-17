@@ -3,7 +3,7 @@
 export const profile = {
   name: "Manan Batra",
   role: "AI Software Engineer",
-  tagline: "I build systems that learn, stream and scale.",
+  tagline: "I build ML systems and the software around them.",
   location: "Tempe, AZ",
   email: "mananbatra2003.mb@gmail.com",
   // TODO: fill in real profile links.
@@ -15,7 +15,7 @@ export const profile = {
   // public/professional/linkedin.jpg and set "/professional/linkedin.jpg". Empty shows your initials.
   photo: "",
   summary:
-    "AI software engineer and MS CS student at Arizona State. I build ML pipelines, real-time streaming systems and agentic AI tools, and I like shipping them end to end.",
+    "I'm doing my MS in CS at Arizona State, and I spent this summer as an AI engineering intern at ParentSquare. Most of what I build is ML pipelines, Kafka streaming systems and, lately, AI agents.",
 };
 
 // The floating music player. Either a path to an audio file in public/
@@ -61,15 +61,15 @@ export const experience: Job[] = [
     dates: "Jun 2026 – Aug 2026",
     stat: { value: "62%", label: "less render-blocking JS" },
     points: [
-      "Built an AI ticket analytics platform with React, TypeScript, FastAPI, PostgreSQL and Gemini.",
-      "Embedding-based duplicate taxonomy detection at 0.93 F1 and 1.00 precision.",
-      "34 Vitest unit tests and role-based access control across frontend and backend.",
+      "Built a ticket analytics app that uses Gemini to make sense of support tickets.",
+      "Found duplicate ticket categories with embeddings: 0.93 F1, no false positives.",
+      "Wrote 34 Vitest tests and added role-based access across the app.",
     ],
     details: [
-      "Developed an AI-powered ticket analytics platform using React, TypeScript, Python, FastAPI, PostgreSQL and Gemini.",
-      "Reduced render-blocking JavaScript by 62% through route-based code splitting and deferred loading.",
-      "Evaluated embedding-based duplicate taxonomy detection, achieving 0.93 F1 with 1.00 precision and 0.88 recall.",
-      "Built 34 Vitest unit tests and implemented role-based access control across frontend and backend workflows."
+      "Built a ticket analytics app that uses Gemini to make sense of support tickets. React and TypeScript on the front, Python, FastAPI and PostgreSQL behind it.",
+      "Cut render-blocking JavaScript by 62% by splitting the code per route and loading the rest later.",
+      "Tested an embedding-based way to catch duplicate categories in the ticket taxonomy: 0.93 F1, 1.00 precision, 0.88 recall.",
+      "Wrote 34 Vitest unit tests and added role-based access control on both the frontend and the backend."
     ],
     stack: ["React", "TypeScript", "Python", "FastAPI", "PostgreSQL", "Gemini", "Vitest"],
   },
@@ -80,15 +80,15 @@ export const experience: Job[] = [
     dates: "Jan 2025 – Apr 2025",
     stat: { value: "10k+", label: "vehicles routed per day" },
     points: [
-      "AI parking guidance for large events such as Kumbh Mela.",
-      "Cut parking search time by about 25–30% with smarter allocation and routing.",
-      "Real-time availability updates improved traffic flow by 20%.",
+      "Parking guidance for huge events like Kumbh Mela.",
+      "Drivers spent about 25–30% less time looking for a spot.",
+      "Routes updated from live parking data, and traffic flowed 20% better.",
     ],
     details: [
-      "Developed an AI-powered parking guidance system to optimize vehicle routing during large-scale events such as Kumbh Mela, handling 10,000+ vehicles a day.",
-      "Reduced vehicle search time for parking by about 25–30% through intelligent parking allocation and routing strategies.",
-      "Processed real-time parking availability data to update routes dynamically, improving overall traffic flow efficiency by 20%.",
-      "Designed the system for high-density crowd scenarios, improving parking utilization and reducing congestion across multiple zones."
+      "Built a parking guidance system for huge events like Kumbh Mela. It routed more than 10,000 vehicles a day.",
+      "Smarter spot allocation and routing cut the time drivers spent looking for parking by about 25–30%.",
+      "Routes updated from live parking availability, which improved traffic flow by 20%.",
+      "Built it for dense crowds, so parking filled up more evenly and congestion dropped across zones."
     ],
     stack: ["Python", "Routing", "Real-time data"],
   },
@@ -99,15 +99,15 @@ export const experience: Job[] = [
     dates: "Aug 2023 – Sep 2023",
     stat: { value: "20%", label: "faster ticket response" },
     points: [
-      "MERN CRM for 100+ users with smart ticket categorisation and priority.",
-      "Reporting dashboards for user and ticket data.",
-      "Automated financial processing with UiPath, cutting manual effort by 30%.",
+      "A MERN CRM for 100+ users, with automatic ticket sorting.",
+      "Dashboards for user and ticket data.",
+      "UiPath bots for financial data, with 30% less manual work.",
     ],
     details: [
-      "Developed a MERN-based CRM system supporting 100+ users, improving internal support workflows.",
-      "Implemented intelligent ticket categorization and prioritization, reducing response time by 20%.",
-      "Built data-driven reporting dashboards to analyze user and ticket data for better decisions.",
-      "Automated financial data processing using UiPath, reducing manual effort by 30%."
+      "Built a MERN CRM used by 100+ people for internal support.",
+      "Added automatic ticket categories and priorities, which cut response time by 20%.",
+      "Built reporting dashboards for user and ticket data.",
+      "Automated financial data processing with UiPath, which cut manual work by 30%."
     ],
     stack: ["MongoDB", "Express", "React", "Node.js", "UiPath"],
   },
@@ -131,7 +131,7 @@ export const projects: Project[] = [
     name: "ResearchPilot",
     stack: ["LangGraph", "Gemini", "FastAPI", "React", "TypeScript"],
     summary:
-      "A four-agent research assistant: one agent searches the web, one analyzes the evidence, one fact-checks it against the sources, and one writes a cited report you can verify claim by claim.",
+      "Four agents split the work. One searches the web, one weighs the evidence, one fact-checks it against the sources, and one writes the report. Every claim links back to where it came from.",
     href: "https://github.com/mananbatraa/researchpilot-ai",
     demo: "",
   },
@@ -139,15 +139,15 @@ export const projects: Project[] = [
     name: "Code Repair Agent",
     stack: ["Python", "AST", "Claude API", "Pytest"],
     summary:
-      "Scans Python code for bug and security patterns, proposes rule-based fixes, and asks Claude for the rest. Every AI patch is checked against the file before it reaches the review report, and nothing is written back to the source.",
+      "Scans Python code for common bugs and security holes. Simple ones get rule-based fixes, and Claude takes the rest. Every AI patch is checked against the file before it goes in the report, and it never touches your code.",
     href: "https://github.com/mananbatraa/autonomous-code-repair-agent",
   },
   {
     name: "Step Cards",
-    note: "Team project · North America AI Challenge 2026 · I built the school and work mode UI",
+    note: "Team project for the North America AI Challenge 2026. I built the school and work mode UI.",
     stack: ["React", "TypeScript", "TanStack Start", "Supabase", "Groq"],
     summary:
-      "Turns any spoken classroom instruction into picture step cards for autistic and ADHD students in real time, with teacher approval before cards reach students and support that fades as each routine is mastered. A work mode breaks manager instructions into plain steps for neurodivergent adults.",
+      "A teacher says an instruction out loud and autistic and ADHD students get it as picture step cards, live. The teacher approves each card first, and the help fades as a routine sticks. Work mode does the same for neurodivergent adults with instructions from their manager.",
     href: "https://github.com/dgupta98/NueroChallange",
     demo: "https://nuero-challange.vercel.app",
     wide: true,
@@ -155,19 +155,19 @@ export const projects: Project[] = [
   {
     name: "AnomalyScan",
     stack: ["Go", "Kafka", "MongoDB", "Prometheus", "Grafana"],
-    summary: "Real-time anomaly detection on a Kafka streaming pipeline, with ML scoring and live observability dashboards.",
+    summary: "Streams data in through Kafka, scores it with an ML model to catch anomalies as they happen, and shows it all in Grafana.",
     href: "",
   },
   {
     name: "LiveRank",
     stack: ["Python", "Kafka", "Redis", "MongoDB"],
-    summary: "Real-time leaderboard using Kafka event streams and Redis sorted sets, kept consistent with MongoDB.",
+    summary: "A live leaderboard. Scores come in over Kafka, Redis sorted sets do the ranking, and MongoDB keeps the record.",
     href: "",
   },
   {
     name: "OptiQueue",
     stack: ["Go", "Uber Cadence"],
-    summary: "Priority queueing on Cadence workflows that schedules by priority, dependencies and available resources.",
+    summary: "A task queue on Uber Cadence that schedules work by priority, dependencies and free resources.",
     href: "",
   },
 ];
@@ -176,7 +176,7 @@ export const research = {
   title: "Early learning disability detection",
   stack: ["Python", "Scikit-learn", "XGBoost"],
   summary:
-    "An end-to-end ML pipeline on educational and health data, using PCA, recursive feature elimination and grid-searched Random Forest, SVM, XGBoost and neural network models.",
+    "Can a model spot a learning disability early? I built a pipeline on educational and health data, trimmed the features with PCA and RFE, and tuned Random Forest, SVM, XGBoost and a neural net. Random Forest won.",
   stats: [
     { value: "93.83%", label: "accuracy" },
     { value: "0.9619", label: "ROC-AUC" },
@@ -192,11 +192,11 @@ export const education = [
 // Headline numbers from the resume, shown as count-up cards on the Professional page.
 export const achievements = [
   { value: 62, suffix: "%", label: "less render-blocking JavaScript", source: "ParentSquare" },
-  { value: 0.93, decimals: 2, label: "F1 on duplicate taxonomy detection (1.00 precision)", source: "ParentSquare" },
-  { value: 10000, suffix: "+", label: "vehicles routed per day at Kumbh Mela scale", source: "Buntikki" },
-  { value: 30, suffix: "%", label: "faster parking search through smarter allocation", source: "Buntikki" },
-  { value: 93.83, decimals: 2, suffix: "%", label: "accuracy on early learning disability detection", source: "Research" },
-  { value: 20, suffix: "%", label: "faster ticket response with smart prioritisation", source: "StarWire" },
+  { value: 0.93, decimals: 2, label: "F1 catching duplicate ticket categories, with no false positives", source: "ParentSquare" },
+  { value: 10000, suffix: "+", label: "vehicles routed a day at Kumbh Mela-sized events", source: "Buntikki" },
+  { value: 30, suffix: "%", label: "less time spent looking for parking", source: "Buntikki" },
+  { value: 93.83, decimals: 2, suffix: "%", label: "accuracy spotting learning disabilities early", source: "Research" },
+  { value: 20, suffix: "%", label: "faster replies to support tickets", source: "StarWire" },
 ];
 
 // Certifications and awards. None are on the resume yet: add them here

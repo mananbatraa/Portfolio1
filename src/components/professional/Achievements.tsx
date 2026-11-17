@@ -3,11 +3,12 @@ import FadeIn from "@/components/motion/FadeIn";
 import SectionHeading from "@/components/motion/SectionHeading";
 import TiltCard from "@/components/motion/TiltCard";
 import { achievements } from "@/lib/content";
+import { headings } from "@/lib/copy";
 
 export default function Achievements() {
   return (
     <section id="achievements" className="px-5 py-24 md:px-16">
-      <SectionHeading kicker="By the numbers" title="RESULTS I SHIPPED" className="mb-12" />
+      <SectionHeading {...headings.achievements} className="mb-12" />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {achievements.map((a, i) => (
           <FadeIn key={a.label} delay={(i % 3) * 0.08} className="h-full">
